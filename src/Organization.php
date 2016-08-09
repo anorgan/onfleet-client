@@ -4,27 +4,28 @@ namespace OnFleet;
 
 class Organization extends Entity
 {
-
-    protected $id;
     protected $name;
+    protected $email;
+    protected $image;
+    protected $timezone;
+    protected $country;
     protected $timeCreated;
+    protected $timeLastModified;
     protected $delegatees = [];
 
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+    protected $endpoint = 'organization';
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
+    protected static $properties = [
+        'id',
+        'name',
+        'email',
+        'image',
+        'timezone',
+        'country',
+        'timeCreated',
+        'timeLastModified',
+        'delegatees',
+    ];
 
     /**
      * @return mixed
@@ -45,17 +46,65 @@ class Organization extends Entity
     /**
      * @return mixed
      */
-    public function getTimeCreated()
+    public function getEmail()
     {
-        return $this->timeCreated;
+        return $this->email;
     }
 
     /**
-     * @param mixed $timeCreated
+     * @param mixed $email
      */
-    public function setTimeCreated($timeCreated)
+    public function setEmail($email)
     {
-        $this->timeCreated = $timeCreated;
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimezone()
+    {
+        return $this->timezone;
+    }
+
+    /**
+     * @param mixed $timezone
+     */
+    public function setTimezone($timezone)
+    {
+        $this->timezone = $timezone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param mixed $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
     }
 
     /**
@@ -75,16 +124,38 @@ class Organization extends Entity
     }
 
     /**
+     * @return mixed
+     */
+    public function getTimeCreated()
+    {
+        return $this->timeCreated;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimeLastModified()
+    {
+        return $this->timeLastModified;
+    }
+
+    /**
+     * @throws \BadMethodCallException
+     */
+    public function update()
+    {
+        throw new \BadMethodCallException('Organization can not be updated');
+    }
+
+    /**
      * @param $json
+     * @param Client $client
      * @return Organization
      */
-    public static function fromJson($json)
+    public static function fromJson($json, Client $client)
     {
-        $organization = new static();
-        $organization->setId($json->id);
-        $organization->setName($json->name);
-        $organization->setTimeCreated($json->timeCreated);
-        $organization->setDelegatees($json->delegatees);
+        $organization = new static($client);
+        static::setProperties($organization, $json);
 
         return $organization;
     }

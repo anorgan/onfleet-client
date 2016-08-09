@@ -9,6 +9,11 @@ class Client extends Guzzle
     const BASE_URL = 'https://onfleet.com/api/{version}/';
     const VERSION  = 'v2';
 
+    /**
+     * Client constructor.
+     * @param array $username
+     * @param array $config
+     */
     public function __construct($username, array $config = [])
     {
         $version = isset($config['version']) ? $config['version'] : static::VERSION;
@@ -30,7 +35,7 @@ class Client extends Guzzle
     public function getMyOrganization()
     {
         $response = $this->get('organization');
-        return Organization::fromJson($response->json(['object' => true]));
+        return Organization::fromJson($response->json(['object' => true]), $this);
     }
 
     /**
@@ -40,11 +45,26 @@ class Client extends Guzzle
      *     @var string  $phone      Optional. The administrator’s phone number.
      *     @var boolean $isReadOnly Optional. Whether this administrator can perform write operations.
      * }
-     * @return mixed
+     * @return Administrator
      */
     public function createAdministrator(array $data)
     {
         $response = $this->post('admins', ['json' => $data]);
-        return Administrator::fromJson($response->json(['object' => true]));
+        return Administrator::fromJson($response->json(['object' => true]), $this);
+    }
+
+    /**
+     * @return Administrator[]
+     */
+    public function getAdministrators()
+    {
+        $response = $this->get('admins');
+
+        $administrators = [];
+        foreach ($response->json(['object' => true]) as $administratorData) {
+            $administrators[] = Administrator::fromJson($administratorData, $this);
+        }
+
+        return $administrators;
     }
 }

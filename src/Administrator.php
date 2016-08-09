@@ -7,7 +7,6 @@ class Administrator extends Entity
     const TYPE_CREATOR    = 'super';
     const TYPE_DISPATCHER = 'standard';
 
-    protected $id;
     protected $name;
     protected $email;
     protected $phone;
@@ -18,13 +17,20 @@ class Administrator extends Entity
     protected $organization;
     protected $metadata = [];
 
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+    protected $endpoint = 'admins';
+
+    protected static $properties = [
+        'id',
+        'name',
+        'email',
+        'phone',
+        'isActive',
+        'organization',
+        'type',
+        'timeCreated',
+        'timeCreated',
+        'metadata',
+    ];
 
     /**
      * @return mixed
@@ -140,21 +146,13 @@ class Administrator extends Entity
 
     /**
      * @param $json
+     * @param Client $client
      * @return Administrator
      */
-    public static function fromJson($json)
+    public static function fromJson($json, Client $client)
     {
-        $administrator                   = new static();
-        $administrator->id               = $json->id;
-        $administrator->name             = $json->name;
-        $administrator->email            = $json->email;
-        $administrator->phone            = $json->phone;
-        $administrator->isActive         = $json->isActive;
-        $administrator->organization     = $json->organization;
-        $administrator->type             = $json->type;
-        $administrator->timeCreated      = $json->timeCreated;
-        $administrator->timeLastModified = $json->timeCreated;
-        $administrator->metadata         = $json->metadata;
+        $administrator = new static($client);
+        static::setProperties($administrator, $json);
 
         return $administrator;
     }
