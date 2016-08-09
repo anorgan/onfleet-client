@@ -67,4 +67,25 @@ class Client extends Guzzle
 
         return $administrators;
     }
+
+    /**
+     * @param array $data {
+     *     @var string  $name       The worker’s complete name.
+     *     @var string  $phone      A valid phone number as per the worker’s organization’s country.
+     *     @var string|array $teams One or more team IDs of which the worker is a member.
+     *     @var object  $vehicle    Optional. The worker’s vehicle; providing no vehicle details is equivalent to the
+     *                              worker being on foot.
+     *       @var string $type          The vehicle’s type, must be one of CAR, MOTORCYCLE, BICYCLE or TRUCK.
+     *       @var string $description   Optional. The vehicle’s make, model, year, or any other relevant identifying details.
+     *       @var string $licensePlate  Optional. The vehicle’s license plate number.
+     *       @var string $color         Optional. The vehicle's color.
+     *     @var integer $capacity   Optional. The maximum number of units this worker can carry, for route optimization purposes.
+     * }
+     * @return Worker
+     */
+    public function createWorker(array $data)
+    {
+        $response = $this->post('workers', ['json' => $data]);
+        return Worker::fromJson($response->json(['object' => true]), $this);
+    }
 }

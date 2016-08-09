@@ -27,9 +27,9 @@ class Administrator extends Entity
         'isActive',
         'organization',
         'type',
-        'timeCreated',
-        'timeCreated',
         'metadata',
+        'timeCreated',
+        'timeLastModified',
     ];
 
     /**
