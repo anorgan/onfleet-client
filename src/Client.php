@@ -88,4 +88,29 @@ class Client extends Guzzle
         $response = $this->post('workers', ['json' => $data]);
         return Worker::fromJson($response->json(['object' => true]), $this);
     }
+
+    /**
+     * @param string $filter Optional. A comma-separated list of fields to return, if all are not desired. For example, name, location.
+     * @param string $teams  Optional. A comma-separated list of the team IDs that workers must be part of.
+     * @param string $states Optional. A comma-separated list of worker states, where
+     *                       0 is off-duty, 1 is idle (on-duty, no active task) and 2 is active (on-duty, active task).
+     * @return Worker[]
+     */
+    public function getWorkers($filter = null, $teams = null, $states = null)
+    {
+        $response = $this->get('workers', [
+            'query' => [
+                'filter' => $filter,
+                'teams'  => $teams,
+                'states' => $states,
+            ],
+        ]);
+
+        $workers = [];
+        foreach ($response->json(['object' => true]) as $administratorData) {
+            $workers[] = Worker::fromJson($administratorData, $this);
+        }
+
+        return $workers;
+    }
 }

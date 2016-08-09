@@ -87,7 +87,12 @@ abstract class Entity
             if (!isset($data->$property)) {
                 continue;
             }
-            $entity->$property = $data->$property;
+
+            if ($data->$property instanceof \stdClass) {
+                $entity->$property = (array) $data->$property;
+            } else {
+                $entity->$property = $data->$property;
+            }
         }
     }
 }
