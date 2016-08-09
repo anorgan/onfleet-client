@@ -88,11 +88,7 @@ abstract class Entity
                 continue;
             }
 
-            if ($data->$property instanceof \stdClass) {
-                $entity->$property = (array) $data->$property;
-            } else {
-                $entity->$property = $data->$property;
-            }
+            $entity->$property = json_decode(json_encode($data->$property), true);
         }
     }
 }

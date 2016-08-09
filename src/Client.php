@@ -107,10 +107,32 @@ class Client extends Guzzle
         ]);
 
         $workers = [];
-        foreach ($response->json(['object' => true]) as $administratorData) {
-            $workers[] = Worker::fromJson($administratorData, $this);
+        foreach ($response->json(['object' => true]) as $workerData) {
+            $workers[] = Worker::fromJson($workerData, $this);
         }
 
         return $workers;
+    }
+
+    /**
+     * @param string $id
+     * @param string $filter  Optional. A comma-separated list of fields to return, if all are not desired.
+     *                        For example: "name, location".
+     * @param bool $analytics Basic worker duty event, traveled distance (meters) and time analytics are optionally
+     *                        available by specifying the query parameter analytics as true.
+     * @return Worker
+     *
+     * @todo: Add "from" and "to" timestamps if analytics is true
+     */
+    public function getWorker($id, $filter = null, $analytics = false)
+    {
+        $response = $this->get('workers', [
+            'query' => [
+                'filter'    => $filter,
+                'analytics' => $analytics ? 'true' : 'false',
+            ],
+        ]);
+
+        return Worker::fromJson($response->json(['object' => true]), $this);
     }
 }
