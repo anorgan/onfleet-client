@@ -135,4 +135,19 @@ class Client extends Guzzle
 
         return Worker::fromJson($response->json(['object' => true]), $this);
     }
+
+    /**
+     * @return Hub[]
+     */
+    public function getHubs()
+    {
+        $response = $this->get('hubs');
+
+        $hubs = [];
+        foreach ($response->json(['object' => true]) as $hubData) {
+            $hubs[] = Hub::fromJson($hubData, $this);
+        }
+
+        return $hubs;
+    }
 }
