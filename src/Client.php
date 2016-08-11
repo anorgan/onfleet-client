@@ -237,4 +237,55 @@ class Client extends Guzzle
         $response = $this->get('destinations/'. $id);
         return Destination::fromJson($response->json(['object' => true]), $this);
     }
+
+    /**
+     * @param array $data {
+     *     @var string $name    The recipient’s complete name.
+     *     @var string $phone   A unique, valid phone number as per the recipient’s organization’s country.
+     *     @var string $notes   Optional. Notes for this recipient: these are global notes that should not be
+     *                          task- or destination-specific.
+     *                          For example, "Customer since June 2012, does not drink non-specialty coffee".
+     *     @var boolean $skipSMSNotifications Optional. Whether this recipient has requested to not receive SMS
+     *                          notifications. Defaults to false if not provided.
+     *     @var boolean $skipPhoneNumberValidation Optional. Whether to skip validation of this recipient's phone
+     *                          number. An E.164-like number is still required (must start with +), however the API
+     *                          will not enforce any country-specific validation rules.
+     * }
+     * @return Recipient
+     */
+    public function createRecipient(array $data): Recipient
+    {
+        $response = $this->post('recipients', ['json' => $data]);
+        return Recipient::fromJson($response->json(['object' => true]), $this);
+    }
+
+    /**
+     * @param $id
+     * @return Recipient
+     */
+    public function getRecipient($id): Recipient
+    {
+        $response = $this->get('recipients/'. $id);
+        return Recipient::fromJson($response->json(['object' => true]), $this);
+    }
+
+    /**
+     * @param string $name
+     * @return Recipient
+     */
+    public function getRecipientByName($name): Recipient
+    {
+        $response = $this->get(['recipients/name/:name', compact('name')]);
+        return Recipient::fromJson($response->json(['object' => true]), $this);
+    }
+
+    /**
+     * @param string $phone
+     * @return Recipient
+     */
+    public function getRecipientByPhone($phone): Recipient
+    {
+        $response = $this->get(['recipients/phone/:phone', compact('phone')]);
+        return Recipient::fromJson($response->json(['object' => true]), $this);
+    }
 }
