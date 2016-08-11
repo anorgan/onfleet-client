@@ -4,6 +4,10 @@ namespace OnFleet;
 
 use GuzzleHttp\Client as Guzzle;
 
+/**
+ * Class Client
+ * @package OnFleet
+ */
 class Client extends Guzzle
 {
     const BASE_URL = 'https://onfleet.com/api/{version}/';

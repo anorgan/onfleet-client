@@ -4,6 +4,10 @@ namespace OnFleet;
 
 use GuzzleHttp\Exception\ClientException;
 
+/**
+ * Class Entity
+ * @package OnFleet
+ */
 abstract class Entity
 {
     protected $id;
@@ -12,6 +16,9 @@ abstract class Entity
      * @var Client
      */
     protected $client;
+
+    protected $endpoint;
+    protected static $properties = [];
 
     /**
      * Entity constructor.
@@ -80,9 +87,9 @@ abstract class Entity
     /**
      * @param $json
      * @param Client $client
-     * @return Entity
+     * @return static
      */
-    public static function fromJson($json, Client $client): Entity
+    public static function fromJson($json, Client $client)
     {
         $entity = new static($client);
         static::setProperties($entity, $json);

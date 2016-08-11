@@ -2,6 +2,10 @@
 
 namespace OnFleet;
 
+/**
+ * Class Worker
+ * @package OnFleet
+ */
 class Worker extends Entity
 {
     const TYPE_CREATOR    = 'super';

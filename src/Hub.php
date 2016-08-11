@@ -2,6 +2,10 @@
 
 namespace OnFleet;
 
+/**
+ * Class Hub
+ * @package OnFleet
+ */
 class Hub extends Entity
 {
     protected $name;

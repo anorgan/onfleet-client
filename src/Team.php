@@ -2,6 +2,10 @@
 
 namespace OnFleet;
 
+/**
+ * Class Team
+ * @package OnFleet
+ */
 class Team extends Entity
 {
     protected $name;

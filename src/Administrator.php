@@ -2,6 +2,10 @@
 
 namespace OnFleet;
 
+/**
+ * Class Administrator
+ * @package OnFleet
+ */
 class Administrator extends Entity
 {
     const TYPE_CREATOR    = 'super';
