@@ -143,17 +143,4 @@ class Administrator extends Entity
     {
         $this->metadata = $metadata;
     }
-
-    /**
-     * @param $json
-     * @param Client $client
-     * @return Administrator
-     */
-    public static function fromJson($json, Client $client)
-    {
-        $administrator = new static($client);
-        static::setProperties($administrator, $json);
-
-        return $administrator;
-    }
 }

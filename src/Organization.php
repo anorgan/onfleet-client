@@ -146,17 +146,4 @@ class Organization extends Entity
     {
         throw new \BadMethodCallException('Organization can not be updated');
     }
-
-    /**
-     * @param $json
-     * @param Client $client
-     * @return Organization
-     */
-    public static function fromJson($json, Client $client)
-    {
-        $organization = new static($client);
-        static::setProperties($organization, $json);
-
-        return $organization;
-    }
 }

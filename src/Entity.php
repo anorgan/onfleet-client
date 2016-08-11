@@ -78,6 +78,19 @@ abstract class Entity
     }
 
     /**
+     * @param $json
+     * @param Client $client
+     * @return Entity
+     */
+    public static function fromJson($json, Client $client): Entity
+    {
+        $entity = new static($client);
+        static::setProperties($entity, $json);
+
+        return $entity;
+    }
+
+    /**
      * @param Entity $entity
      * @param $data
      */

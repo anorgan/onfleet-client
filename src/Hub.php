@@ -48,17 +48,4 @@ class Hub extends Entity
     {
         throw new \BadMethodCallException('Hub can not be updated');
     }
-
-    /**
-     * @param $json
-     * @param Client $client
-     * @return Hub
-     */
-    public static function fromJson($json, Client $client)
-    {
-        $hub = new static($client);
-        static::setProperties($hub, $json);
-
-        return $hub;
-    }
 }

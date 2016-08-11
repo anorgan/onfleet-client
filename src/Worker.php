@@ -251,17 +251,4 @@ class Worker extends Entity
     {
         return $this->timeLastModified;
     }
-
-    /**
-     * @param $json
-     * @param Client $client
-     * @return Worker
-     */
-    public static function fromJson($json, Client $client)
-    {
-        $worker = new static($client);
-        static::setProperties($worker, $json);
-
-        return $worker;
-    }
 }

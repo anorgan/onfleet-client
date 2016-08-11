@@ -32,7 +32,7 @@ class Client extends Guzzle
     /**
      * @return Organization
      */
-    public function getMyOrganization()
+    public function getMyOrganization(): Organization
     {
         $response = $this->get('organization');
         return Organization::fromJson($response->json(['object' => true]), $this);
@@ -47,7 +47,7 @@ class Client extends Guzzle
      * }
      * @return Administrator
      */
-    public function createAdministrator(array $data)
+    public function createAdministrator(array $data): Administrator
     {
         $response = $this->post('admins', ['json' => $data]);
         return Administrator::fromJson($response->json(['object' => true]), $this);
@@ -56,7 +56,7 @@ class Client extends Guzzle
     /**
      * @return Administrator[]
      */
-    public function getAdministrators()
+    public function getAdministrators(): array
     {
         $response = $this->get('admins');
 
@@ -83,7 +83,7 @@ class Client extends Guzzle
      * }
      * @return Worker
      */
-    public function createWorker(array $data)
+    public function createWorker(array $data): Worker
     {
         $response = $this->post('workers', ['json' => $data]);
         return Worker::fromJson($response->json(['object' => true]), $this);
@@ -96,7 +96,7 @@ class Client extends Guzzle
      *                       0 is off-duty, 1 is idle (on-duty, no active task) and 2 is active (on-duty, active task).
      * @return Worker[]
      */
-    public function getWorkers($filter = null, $teams = null, $states = null)
+    public function getWorkers($filter = null, $teams = null, $states = null): array
     {
         $response = $this->get('workers', [
             'query' => [
@@ -124,9 +124,9 @@ class Client extends Guzzle
      *
      * @todo: Add "from" and "to" timestamps if analytics is true
      */
-    public function getWorker($id, $filter = null, $analytics = false)
+    public function getWorker($id, $filter = null, $analytics = false): Worker
     {
-        $response = $this->get('workers', [
+        $response = $this->get('workers/'. $id, [
             'query' => [
                 'filter'    => $filter,
                 'analytics' => $analytics ? 'true' : 'false',
@@ -139,7 +139,7 @@ class Client extends Guzzle
     /**
      * @return Hub[]
      */
-    public function getHubs()
+    public function getHubs(): array
     {
         $response = $this->get('hubs');
 
@@ -149,5 +149,46 @@ class Client extends Guzzle
         }
 
         return $hubs;
+    }
+
+    /**
+     * @param array $data {
+     *     @var string $name     A unique name for the team.
+     *     @var array  $workers  An array of worker IDs.
+     *     @var array  $managers An array of managing administrator IDs.
+     *     @var string $hub      Optional. The ID of the team's hub.
+     * }
+     *
+     * @return Team
+     */
+    public function createTeam(array $data): Team
+    {
+        $response = $this->post('teams', ['json' => $data]);
+        return Team::fromJson($response->json(['object' => true]), $this);
+    }
+
+    /**
+     * @return Team[]
+     */
+    public function getTeams(): array
+    {
+        $response = $this->get('teams');
+
+        $teams = [];
+        foreach ($response->json(['object' => true]) as $teamData) {
+            $teams[] = Team::fromJson($teamData, $this);
+        }
+
+        return $teams;
+    }
+
+    /**
+     * @param $id
+     * @return Team
+     */
+    public function getTeam($id): Team
+    {
+        $response = $this->get('teams/'. $id);
+        return Team::fromJson($response->json(['object' => true]), $this);
     }
 }
