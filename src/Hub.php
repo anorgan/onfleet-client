@@ -52,4 +52,12 @@ class Hub extends Entity
     {
         throw new \BadMethodCallException('Hub can not be updated');
     }
+
+    /**
+     * @throws \BadMethodCallException
+     */
+    public function delete()
+    {
+        throw new \BadMethodCallException('Hub can not be deleted');
+    }
 }

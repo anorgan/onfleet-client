@@ -195,4 +195,46 @@ class Client extends Guzzle
         $response = $this->get('teams/'. $id);
         return Team::fromJson($response->json(['object' => true]), $this);
     }
+
+    /**
+     * @param array $data {
+     *     @var array $address  The destination’s street address details. {
+     *         @var string $name       Optional. A name associated with this address, e.g., "Transamerica Pyramid".
+     *         @var string $number     The number component of this address, it may also contain letters.
+     *         @var string $street     The name of the street.
+     *         @var string $apartment  Optional. The suite or apartment number, or any additional relevant information.
+     *         @var string $city       The name of the municipality.
+     *         @var string $state      Optional. The name of the state, province or jurisdiction.
+     *         @var string $postalCode Optional. The postal or zip code.
+     *         @var string $country    The name of the country.
+     *         @var string $unparsed   Optional. A complete address specified in a single, unparsed string where the
+     *                                 various elements are separated by commas. If present, all other address
+     *                                 properties will be ignored (with the exception of name and apartment).
+     *                                 In some countries, you may skip most address details (like city or state)
+     *                                 if you provide a valid postalCode: for example,
+     *                                 543 Howard St, 94105, USA will be geocoded correctly.
+     *     }
+     *     @var string $notes   Optional. Note that goes with this destination, e.g. "Please call before"
+     *     @var array $location Optional. The [ longitude, latitude ] geographic coordinates. If missing, the API will
+     *                          geocode based on the address details provided. Note that geocoding may slightly modify
+     *                          the format of the address properties. address.unparsed cannot be provided if you are
+     *                          also including a location.
+     * }
+     * @return Destination
+     */
+    public function createDestination(array $data): Destination
+    {
+        $response = $this->post('destinations', ['json' => $data]);
+        return Destination::fromJson($response->json(['object' => true]), $this);
+    }
+
+    /**
+     * @param $id
+     * @return Destination
+     */
+    public function getDestination($id): Destination
+    {
+        $response = $this->get('destinations/'. $id);
+        return Destination::fromJson($response->json(['object' => true]), $this);
+    }
 }
