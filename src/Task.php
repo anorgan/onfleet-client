@@ -1,6 +1,7 @@
 <?php
 
 namespace OnFleet;
+use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Class Task
@@ -62,6 +63,7 @@ class Task extends Entity
     protected $container         = [];
     protected $recipients        = [];
     protected $destination;
+    protected $delayTime;
     protected $timeCreated;
     protected $timeLastModified;
     protected $didAutoAssign;
@@ -90,6 +92,7 @@ class Task extends Entity
         'container',
         'recipients',
         'destination',
+        'delayTime',
         'timeCreated',
         'timeLastModified',
         'didAutoAssign',
@@ -198,6 +201,14 @@ class Task extends Entity
     public function setState(int $state)
     {
         $this->state = $state;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDelayTime()
+    {
+        return $this->delayTime;
     }
 
     /**
@@ -393,6 +404,52 @@ class Task extends Entity
     {
         return $this->didAutoAssign;
     }
+
+    /**
+     * @throws \LogicException
+     * @return Entity
+     */
+    public function update()
+    {
+        if (self::STATE_COMPLETED === $this->getState()) {
+            throw new LogicException('Unable to modify completed task');
+        }
+
+        return parent::update();
+    }
+
+    /**
+     * @throws \LogicException
+     */
+    public function delete()
+    {
+        if (self::STATE_COMPLETED === $this->getState()) {
+            throw new LogicException('Unable to delete completed task');
+        }
+
+        if (self::STATE_ACTIVE === $this->getState()) {
+            throw new LogicException('Unable to delete active task');
+        }
+
+        parent::delete();
+    }
+
+    /**
+     * @param bool $success
+     * @param string $notes
+     */
+    public function complete($success = true, $notes = null)
+    {
+        $this->client->post($this->endpoint .'/'. $this->id .'/complete', [
+            'json' => [
+                'completionDetails' => [
+                    'success' => $success,
+                    'notes'   => $notes
+                ]
+            ]
+        ]);
+    }
+
 
     /**
      * @param Destination $destination           The valid Destination object.

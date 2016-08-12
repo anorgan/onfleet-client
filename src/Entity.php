@@ -57,9 +57,7 @@ abstract class Entity
     public function delete()
     {
         try {
-            $this->client->delete($this->endpoint .'/'. $this->id, [
-                'json' => $this->toArray()
-            ]);
+            $this->client->delete($this->endpoint .'/'. $this->id);
         } catch (ClientException $e) {
             $error   = $e->getResponse()->json();
             $message = $error['message']['message'];

@@ -299,4 +299,52 @@ class Client extends Guzzle
         $response = $this->post('tasks', ['json' => $data]);
         return Task::fromJson($response->json(['object' => true]), $this);
     }
+
+    /**
+     * @param int $from      The starting time of the range. Tasks created or completed at or after this time will be included.
+     * @param int $to        Optional. If missing, defaults to the current time. The ending time of the range.
+     *                       Tasks created or completed before this time will be included.
+     * @param string $lastId Optional. Used to walk the paginated response, if there is one. Tasks created after this ID
+     *                       will be returned, up to the per-query limit of 64.
+     * @return Task[]
+     */
+    public function getTasks($from, $to = null, &$lastId = null): array
+    {
+        $response = $this->get('tasks/all', [
+            'query' => [
+                'from'   => $from,
+                'to'     => $to,
+                'lastId' => $lastId,
+            ],
+        ]);
+
+        $tasks  = [];
+        $json   = $response->json(['object' => true]);
+        $lastId = isset($json->lastId) ? $json->lastId : false;
+        foreach ($json->tasks as $taskData) {
+            $tasks[] = Task::fromJson($taskData, $this);
+        }
+
+        return $tasks;
+    }
+
+    /**
+     * @param $id
+     * @return Task
+     */
+    public function getTask($id): Task
+    {
+        $response = $this->get('tasks/'. $id);
+        return Task::fromJson($response->json(['object' => true]), $this);
+    }
+
+    /**
+     * @param $shortId
+     * @return Task
+     */
+    public function getTaskByShortId($shortId): Task
+    {
+        $response = $this->get('tasks/shortId/'. $shortId);
+        return Task::fromJson($response->json(['object' => true]), $this);
+    }
 }
