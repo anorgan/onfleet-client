@@ -248,3 +248,4 @@ class Worker extends Entity
         return $this->timeLastModified;
     }
 }
+

@@ -1,10 +1,10 @@
 <?php
 
-namespace OnFleet;
+namespace Onfleet;
 
 /**
  * Class Administrator
- * @package OnFleet
+ * @package Onfleet
  */
 class Administrator extends Entity
 {
@@ -140,3 +140,4 @@ class Administrator extends Entity
         return $this->metadata;
     }
 }
+

@@ -1,10 +1,10 @@
 <?php
 
-namespace OnFleet;
+namespace Onfleet;
 
 /**
  * Class Destination
- * @package OnFleet
+ * @package Onfleet
  */
 class Destination extends Entity
 {
@@ -115,3 +115,4 @@ class Destination extends Entity
         throw new \BadMethodCallException('Destination can not be deleted');
     }
 }
+

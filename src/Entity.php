@@ -1,12 +1,12 @@
 <?php
 
-namespace OnFleet;
+namespace Onfleet;
 
 use GuzzleHttp\Exception\ClientException;
 
 /**
  * Class Entity
- * @package OnFleet
+ * @package Onfleet
  */
 abstract class Entity
 {
@@ -198,3 +198,4 @@ abstract class Entity
         }
     }
 }
+

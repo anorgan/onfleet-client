@@ -583,3 +583,4 @@ class Task extends Entity
         return $taskArray;
     }
 }
+

@@ -1,10 +1,10 @@
 <?php
 
-namespace OnFleet;
+namespace Onfleet;
 
 /**
  * Class Hub
- * @package OnFleet
+ * @package Onfleet
  */
 class Hub extends Entity
 {
@@ -70,3 +70,4 @@ class Hub extends Entity
         throw new \BadMethodCallException('Hub does not support metadata');
     }
 }
+
