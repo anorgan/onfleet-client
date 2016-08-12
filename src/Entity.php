@@ -67,9 +67,9 @@ abstract class Entity
         $structuredMetadata = [];
 
         foreach ($metadata as $property => $value) {
-            $type    = gettype($value); // '‘boolean’, ‘number’, ‘string’, ‘object’, ‘array’';
+            $type    = gettype($value);
             $subtype = null;
-            switch ($type) { // "boolean" "integer" "double" "string" "array" "object" "resource" "NULL" "unknown type"
+            switch ($type) {
                 case 'boolean':
                 case 'string':
                 case 'object':
@@ -106,7 +106,6 @@ abstract class Entity
 
                 default:
                     throw new \InvalidArgumentException('Unallowed type of '. $type .' for metadata property '. $property);
-                    break;
             }
 
             $metadatum = [
@@ -186,7 +185,7 @@ abstract class Entity
 
     /**
      * @param Entity $entity
-     * @param $data
+     * @param object $data
      */
     protected static function setProperties(Entity $entity, $data)
     {

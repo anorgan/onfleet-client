@@ -15,7 +15,7 @@ class Client extends Guzzle
 
     /**
      * Client constructor.
-     * @param array $username
+     * @param string $username
      * @param array $config
      */
     public function __construct($username, array $config = [])

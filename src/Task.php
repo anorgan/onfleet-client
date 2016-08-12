@@ -462,7 +462,7 @@ class Task extends Entity
      * @param int $completeAfter                 Optional. A timestamp for the earliest time the task should be completed.
      * @param int $completeBefore                Optional. A timestamp for the latest time the task should be completed.
      * @param bool $pickupTask                   Optional. Whether the task is a pickup task.
-     * @param array $dependencies                Optional. One or more IDs of tasks which must be completed prior to this task.
+     * @param array|null $dependencies           Optional. One or more IDs of tasks which must be completed prior to this task.
      * @param int $quantity                      Optional. The number of units to be dropped off while completing this
      *                                           task, for route optimization purposes.
      * @param int $serviceTime                   Optional. The number of minutes to be spent by the worker on arrival at

@@ -1,5 +1,9 @@
 # OnFleet API Client
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/anorgan/onfleet-client/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/anorgan/onfleet-client/?branch=master)
+[![MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/anorgan/onfleet-client/blob/master/LICENSE)
+[![Latest Stable Version](https://img.shields.io/packagist/v/anorgan/onfleet-client.svg?style=flat-square)](https://packagist.org/packages/anorgan/onfleet-client)
+
 PHP API Client for [OnFleet](https://onfleet.com/https://onfleet.com/) service
 
 ## Instalation
