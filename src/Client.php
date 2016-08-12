@@ -288,4 +288,15 @@ class Client extends Guzzle
         $response = $this->get(['recipients/phone/:phone', compact('phone')]);
         return Recipient::fromJson($response->json(['object' => true]), $this);
     }
+
+    /**
+     * @see Task::createAutoAssignedArray
+     * @param array $data
+     * @return Task
+     */
+    public function createTask(array $data): Task
+    {
+        $response = $this->post('tasks', ['json' => $data]);
+        return Task::fromJson($response->json(['object' => true]), $this);
+    }
 }
