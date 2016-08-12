@@ -84,14 +84,6 @@ class Destination extends Entity
     }
 
     /**
-     * @param array $metadata
-     */
-    public function setMetadata(array $metadata)
-    {
-        $this->metadata = $metadata;
-    }
-
-    /**
      * @return mixed
      */
     public function getTimeCreated()

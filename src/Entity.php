@@ -11,6 +11,7 @@ use GuzzleHttp\Exception\ClientException;
 abstract class Entity
 {
     protected $id;
+    protected $metadata = [];
 
     /**
      * @var Client
@@ -35,6 +36,81 @@ abstract class Entity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @internal
+     */
+    public function getMetadata()
+    {
+        throw new \BadMethodCallException('Entity does not support metadata');
+    }
+
+    /**
+     * @param array $metadata
+     */
+    public function setMetadata(array $metadata)
+    {
+        $structuredMetadata = [];
+
+        foreach ($metadata as $property => $value) {
+            $type    = gettype($value); // '‘boolean’, ‘number’, ‘string’, ‘object’, ‘array’';
+            $subtype = null;
+            switch ($type) { // "boolean" "integer" "double" "string" "array" "object" "resource" "NULL" "unknown type"
+                case 'boolean':
+                case 'string':
+                case 'object':
+                    // Valid type
+                    break;
+
+                case 'integer':
+                case 'double':
+                    $type = 'number';
+                    break;
+
+                case 'array':
+                    if (is_string(reset($value))) {
+                        $type = 'object';
+                        break;
+                    }
+
+                    $subtype = gettype($value[0]);
+                    array_walk($value, function ($item) use ($subtype, $property) {
+                        if (gettype($item) !== $subtype) {
+                            throw new \InvalidArgumentException('All array items have to be of the same type for metadata property '. $property);
+                        }
+                    });
+
+                    if ($subtype == 'integer' || $subtype === 'double') {
+                        $subtype = 'number';
+                    }
+                    $allowedSubtypes = ['boolean', 'number', 'string', 'object'];
+                    if (!in_array($subtype, $allowedSubtypes)) {
+                        throw new \InvalidArgumentException('Unallowed type of '. $subtype .' for array item of metadata property '. $property);
+                    }
+
+                    break;
+
+                default:
+                    throw new \InvalidArgumentException('Unallowed type of '. $type .' for metadata property '. $property);
+                    break;
+            }
+
+            $metadatum = [
+                'name'       => $property,
+                'type'       => $type,
+                'value'      => $value,
+                'visibility' => ['api']
+            ];
+
+            if (isset($subtype)) {
+                $metadatum['subtype'] = $subtype;
+            }
+
+            $structuredMetadata[] = $metadatum;
+        }
+
+        $this->metadata = $structuredMetadata;
     }
 
     /**

@@ -309,14 +309,6 @@ class Task extends Entity
     }
 
     /**
-     * @param array $metadata
-     */
-    public function setMetadata(array $metadata)
-    {
-        $this->metadata = $metadata;
-    }
-
-    /**
      * @return array
      */
     public function getOverrides(): array

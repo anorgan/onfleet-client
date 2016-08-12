@@ -139,12 +139,4 @@ class Administrator extends Entity
     {
         return $this->metadata;
     }
-
-    /**
-     * @param array $metadata
-     */
-    public function setMetadata(array $metadata)
-    {
-        $this->metadata = $metadata;
-    }
 }
