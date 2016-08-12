@@ -116,4 +116,13 @@ class Webhook extends Entity
     {
         return $this->count;
     }
+
+    /**
+     * @param array $metadata
+     * @internal
+     */
+    public function setMetadata(array $metadata)
+    {
+        throw new \BadMethodCallException('Webhook does not support metadata');
+    }
 }

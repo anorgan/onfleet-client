@@ -60,4 +60,13 @@ class Hub extends Entity
     {
         throw new \BadMethodCallException('Hub can not be deleted');
     }
+
+    /**
+     * @param array $metadata
+     * @internal
+     */
+    public function setMetadata(array $metadata)
+    {
+        throw new \BadMethodCallException('Hub does not support metadata');
+    }
 }

@@ -150,4 +150,13 @@ class Organization extends Entity
     {
         throw new \BadMethodCallException('Organization can not be updated');
     }
+
+    /**
+     * @param array $metadata
+     * @internal
+     */
+    public function setMetadata(array $metadata)
+    {
+        throw new \BadMethodCallException('Organization does not support metadata');
+    }
 }

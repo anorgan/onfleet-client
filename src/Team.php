@@ -100,4 +100,13 @@ class Team extends Entity
     {
         $this->hub = $hub;
     }
+
+    /**
+     * @param array $metadata
+     * @internal
+     */
+    public function setMetadata(array $metadata)
+    {
+        throw new \BadMethodCallException('Team does not support metadata');
+    }
 }
