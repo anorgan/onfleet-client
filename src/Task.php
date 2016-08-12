@@ -1,6 +1,7 @@
 <?php
 
 namespace OnFleet;
+
 use Symfony\Component\Console\Exception\LogicException;
 
 /**

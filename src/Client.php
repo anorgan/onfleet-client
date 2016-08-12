@@ -347,4 +347,87 @@ class Client extends Guzzle
         $response = $this->get('tasks/shortId/'. $shortId);
         return Task::fromJson($response->json(['object' => true]), $this);
     }
+
+    /**
+     * Replace all organization's tasks.
+     *
+     * @param array $taskIds
+     * @param string $organizationId
+     */
+    public function setOrganizationTasks(array $taskIds, $organizationId)
+    {
+        $this->setContainerTasks('organizations', $organizationId, $taskIds);
+    }
+
+    /**
+     * @param array $taskIds
+     * @param string $organizationId
+     */
+    public function addTasksToOrganization(array $taskIds, $organizationId)
+    {
+        $this->setContainerTasks('organizations', $organizationId, $taskIds, -1);
+    }
+
+    /**
+     * Replace all team's tasks.
+     *
+     * @param array $taskIds
+     * @param string $teamId
+     */
+    public function setTeamTasks(array $taskIds, $teamId)
+    {
+        $this->setContainerTasks('teams', $teamId, $taskIds);
+    }
+
+    /**
+     * @param array $taskIds
+     * @param string $teamId
+     */
+    public function addTasksToTeam(array $taskIds, $teamId)
+    {
+        $this->setContainerTasks('teams', $teamId, $taskIds, -1);
+    }
+
+    /**
+     * Replace all worker's tasks.
+     *
+     * @param array $taskIds
+     * @param string $workerId
+     */
+    public function setWorkerTasks(array $taskIds, $workerId)
+    {
+        $this->setContainerTasks('workers', $workerId, $taskIds);
+    }
+
+    /**
+     * @param array $taskIds
+     * @param string $workerId
+     */
+    public function addTasksToWorker(array $taskIds, $workerId)
+    {
+        $this->setContainerTasks('workers', $workerId, $taskIds, -1);
+    }
+
+    /**
+     * @param string $containerEndpoint "organizations", "workers" or "teams"
+     * @param string $targetId          ID of organization, worker or team.
+     * @param array $taskIds            Array of task IDs.
+     * @param int $position             Insert tasks at a given index. To append to the end, use -1, to prepend, use 0.
+     */
+    private function setContainerTasks($containerEndpoint, $targetId, array $taskIds, $position = null)
+    {
+        if (null !== $position) {
+            if (!is_numeric($position)) {
+                throw new \InvalidArgumentException('Position argument should be numeric, -1 for appending, 0 to prepend');
+            }
+
+            array_unshift($taskIds, $position);
+        }
+
+        $this->put('containers/'. $containerEndpoint .'/'. $targetId, [
+            'json' => [
+                'tasks' => $taskIds
+            ]
+        ]);
+    }
 }
