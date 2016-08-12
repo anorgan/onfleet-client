@@ -126,3 +126,4 @@ class Webhook extends Entity
         throw new \BadMethodCallException('Webhook does not support metadata');
     }
 }
+

@@ -1,12 +1,12 @@
 <?php
 
-namespace OnFleet;
+namespace Onfleet;
 
 use GuzzleHttp\Client as Guzzle;
 
 /**
  * Class Client
- * @package OnFleet
+ * @package Onfleet
  */
 class Client extends Guzzle
 {
@@ -463,3 +463,4 @@ class Client extends Guzzle
         ]);
     }
 }
+

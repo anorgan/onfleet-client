@@ -1,6 +1,6 @@
 {
   "name": "anorgan/onfleet-client",
-  "description": "OnFleet API client",
+  "description": "Onfleet API client",
   "minimum-stability": "stable",
   "license": "MIT",
   "authors": [
@@ -8,7 +8,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "OnFleet\\": "src/"
+      "Onfleet\\": "src/"
     }
   },
   "require": {
@@ -19,3 +19,4 @@
     "friendsofphp/php-cs-fixer": "^1.11"
   }
 }
+

@@ -1,10 +1,10 @@
 <?php
 
-namespace OnFleet;
+namespace Onfleet;
 
 /**
  * Class Organization
- * @package OnFleet
+ * @package Onfleet
  */
 class Organization extends Entity
 {
@@ -160,3 +160,4 @@ class Organization extends Entity
         throw new \BadMethodCallException('Organization does not support metadata');
     }
 }
+

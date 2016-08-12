@@ -110,3 +110,4 @@ class Team extends Entity
         throw new \BadMethodCallException('Team does not support metadata');
     }
 }
+

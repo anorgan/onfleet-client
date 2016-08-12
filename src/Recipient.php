@@ -135,3 +135,4 @@ class Recipient extends Entity
         throw new \BadMethodCallException('Recipient can not be deleted');
     }
 }
+
