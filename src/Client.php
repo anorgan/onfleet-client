@@ -409,6 +409,38 @@ class Client extends Guzzle
     }
 
     /**
+     * @param $url
+     * @param $triggerId
+     * @return Webhook
+     */
+    public function createWebhook($url, $triggerId): Webhook
+    {
+        $response = $this->post('webhooks', [
+            'json' => [
+                'url'     => $url,
+                'trigger' => $triggerId,
+            ]
+        ]);
+
+        return Webhook::fromJson($response->json(['object' => true]), $this);
+    }
+
+    /**
+     * @return Webhook[]
+     */
+    public function getWebhooks(): array
+    {
+        $response = $this->get('webhooks');
+
+        $webhooks = [];
+        foreach ($response->json(['object' => true]) as $webhookData) {
+            $webhooks[] = Webhook::fromJson($webhookData, $this);
+        }
+
+        return $webhooks;
+    }
+
+    /**
      * @param string $containerEndpoint "organizations", "workers" or "teams"
      * @param string $targetId          ID of organization, worker or team.
      * @param array $taskIds            Array of task IDs.
