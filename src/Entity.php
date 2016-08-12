@@ -47,6 +47,19 @@ abstract class Entity
     }
 
     /**
+     * @return array
+     */
+    public function getNormalizedMetadata()
+    {
+        $normalizedMetadata = [];
+        foreach ($this->metadata as $metadatum) {
+            $normalizedMetadata[$metadatum['name']] = $metadatum['value'];
+        }
+
+        return $normalizedMetadata;
+    }
+
+    /**
      * @param array $metadata
      */
     public function setMetadata(array $metadata)
