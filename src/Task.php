@@ -441,6 +441,8 @@ class Task extends Entity
                 ]
             ]
         ]);
+
+        $this->state = self::STATE_COMPLETED;
     }
 
 
