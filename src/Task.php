@@ -490,7 +490,12 @@ class Task extends Entity
             $recipients = [$recipients->getId()];
         }
         $task->setRecipients($recipients);
+
+        if ($destination instanceof Destination) {
+            $destination = $destination->getId();
+        }
         $task->setDestination($destination);
+
         $task->setMerchant($merchant);
         $task->setExecutor($executor);
         $task->setNotes($notes);
@@ -512,8 +517,7 @@ class Task extends Entity
             $taskArray['autoAssign']['team'] = $autoAssignTeam->getId();
         }
 
-
-        return $taskArray;
+        return array_filter($taskArray);
     }
 
     /**
@@ -561,7 +565,12 @@ class Task extends Entity
             $recipients = [$recipients->getId()];
         }
         $task->setRecipients($recipients);
+
+        if ($destination instanceof Destination) {
+            $destination = $destination->getId();
+        }
         $task->setDestination($destination);
+
         $task->setMerchant($merchant);
         $task->setExecutor($executor);
         $task->setNotes($notes);
@@ -580,6 +589,6 @@ class Task extends Entity
             strtolower($containerType) => $containerTarget
         ];
 
-        return $taskArray;
+        return array_filter($taskArray);
     }
 }

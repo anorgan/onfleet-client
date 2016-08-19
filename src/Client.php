@@ -3,6 +3,7 @@
 namespace OnFleet;
 
 use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * Class Client
@@ -34,11 +35,63 @@ class Client extends Guzzle
     }
 
     /**
+     * @param null $url
+     * @param array $options
+     * @throws \Exception
+     * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|\GuzzleHttp\Ring\Future\FutureInterface|null
+     */
+    public function post($url = null, array $options = [])
+    {
+        try {
+            return parent::post($url, $options);
+        } catch (ClientException $e) {
+            $error   = $e->getResponse()->json();
+            $message = $error['message']['message'];
+            if (isset($error['message']['cause'])) {
+                if (is_array($error['message']['cause'])) {
+                    $message .= ' '. implode(', ', $error['message']['cause']);
+                } else {
+                    $message .= ' '. $error['message']['cause'];
+                }
+            }
+            throw new \Exception('Error while calling post on '. $url .': '. $message);
+        }
+    }
+
+    /**
+     * @param null $url
+     * @param array $options
+     * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|\GuzzleHttp\Ring\Future\FutureInterface|null
+     */
+    public function get($url = null, $options = [])
+    {
+        try {
+            return parent::get($url, $options);
+        } catch (ClientException $e) {
+            if ($e->getCode() == 404) {
+                return null;
+            }
+            throw $e;
+        }
+    }
+
+    /**
      * @return Organization
      */
     public function getMyOrganization(): Organization
     {
         $response = $this->get('organization');
+        return Organization::fromJson($response->json(['object' => true]), $this);
+    }
+
+    /**
+     * Get delegatee organization
+     *
+     * @return Organization
+     */
+    public function getOrganization($id): Organization
+    {
+        $response = $this->get('organizations/'. $id);
         return Organization::fromJson($response->json(['object' => true]), $this);
     }
 
@@ -271,21 +324,32 @@ class Client extends Guzzle
 
     /**
      * @param string $name
-     * @return Recipient
+     * @return Recipient|null
      */
-    public function getRecipientByName($name): Recipient
+    public function getRecipientByName($name)
     {
-        $response = $this->get(['recipients/name/:name', compact('name')]);
+        $name     = str_replace('+', '%20', urlencode(strtolower($name)));
+        $response = $this->get('recipients/name/'. $name);
+
+        if (null === $response) {
+            return null;
+        }
+
         return Recipient::fromJson($response->json(['object' => true]), $this);
     }
 
     /**
      * @param string $phone
-     * @return Recipient
+     * @return Recipient|null
      */
-    public function getRecipientByPhone($phone): Recipient
+    public function getRecipientByPhone($phone)
     {
-        $response = $this->get(['recipients/phone/:phone', compact('phone')]);
+        $response = $this->get('recipients/phone/'. $phone);
+
+        if (null === $response) {
+            return null;
+        }
+
         return Recipient::fromJson($response->json(['object' => true]), $this);
     }
 
