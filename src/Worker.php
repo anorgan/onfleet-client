@@ -137,35 +137,19 @@ class Worker extends Entity
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getTimeLastSeen()
     {
-        return $this->timeLastSeen;
+        return $this->toDateTime($this->timeLastSeen);
     }
 
     /**
-     * @param mixed $timeLastSeen
-     */
-    public function setTimeLastSeen($timeLastSeen)
-    {
-        $this->timeLastSeen = $timeLastSeen;
-    }
-
-    /**
-     * @return mixed
+     * @return int Amount of time in seconds that a worker is delayed by.
      */
     public function getDelayTime()
     {
         return $this->delayTime;
-    }
-
-    /**
-     * @param mixed $delayTime
-     */
-    public function setDelayTime($delayTime)
-    {
-        $this->delayTime = $delayTime;
     }
 
     /**

@@ -205,7 +205,7 @@ class Task extends Entity
     }
 
     /**
-     * @return int
+     * @return int Amount of time in seconds that a task is delayed by.
      */
     public function getDelayTime()
     {
