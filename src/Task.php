@@ -501,8 +501,14 @@ class Task extends Entity
         }
         $task->setDestination($destination);
 
-        $task->setMerchant($merchant);
-        $task->setExecutor($executor);
+        if (null !== $merchant) {
+            $task->setMerchant($merchant->getId());
+        }
+
+        if (null !== $executor) {
+            $task->setExecutor($executor->getId());
+        }
+
         $task->setNotes($notes);
         $task->setCompleteAfter($completeAfter);
         $task->setCompleteBefore($completeBefore);
@@ -576,8 +582,14 @@ class Task extends Entity
         }
         $task->setDestination($destination);
 
-        $task->setMerchant($merchant);
-        $task->setExecutor($executor);
+        if (null !== $merchant) {
+            $task->setMerchant($merchant->getId());
+        }
+
+        if (null !== $executor) {
+            $task->setExecutor($executor->getId());
+        }
+
         $task->setNotes($notes);
         $task->setCompleteAfter($completeAfter);
         $task->setCompleteBefore($completeBefore);
