@@ -38,7 +38,7 @@ class Client extends Guzzle
      * @param null $url
      * @param array $options
      * @throws \Exception
-     * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|\GuzzleHttp\Ring\Future\FutureInterface|null
+     * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function post($url = null, array $options = [])
     {
@@ -61,7 +61,7 @@ class Client extends Guzzle
     /**
      * @param null $url
      * @param array $options
-     * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|\GuzzleHttp\Ring\Future\FutureInterface|null
+     * @return \GuzzleHttp\Message\ResponseInterface|null
      */
     public function get($url = null, $options = [])
     {
