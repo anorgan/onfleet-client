@@ -433,6 +433,9 @@ class Task extends Entity
      */
     public function complete($success = true, $notes = null)
     {
+        if (self::STATE_ACTIVE !== $this->getState()) {
+            throw new LogicException('Unable to complete non active task');
+        }
         $this->client->post($this->endpoint .'/'. $this->id .'/complete', [
             'json' => [
                 'completionDetails' => [

@@ -365,22 +365,29 @@ class Client extends Guzzle
     }
 
     /**
-     * @param int $from      The starting time of the range. Tasks created or completed at or after this time will be included.
-     * @param int $to        Optional. If missing, defaults to the current time. The ending time of the range.
-     *                       Tasks created or completed before this time will be included.
+     * @param int|\DateTime $from      The starting time of the range. Tasks created or completed at or after this time will be included.
+     *                                 Millisecond precision int or DateTime
+     * @param int|\DateTime $to        Optional. If missing, defaults to the current time. The ending time of the range.
+     *                                 Tasks created or completed before this time will be included.
+     *                                 Millisecond precision int or DateTime
      * @param string $lastId Optional. Used to walk the paginated response, if there is one. Tasks created after this ID
      *                       will be returned, up to the per-query limit of 64.
      * @return Task[]
      */
     public function getTasks($from, $to = null, &$lastId = null): array
     {
-        $response = $this->get('tasks/all', [
-            'query' => [
-                'from'   => $from,
-                'to'     => $to,
-                'lastId' => $lastId,
-            ],
+        if ($from instanceof \DateTime) {
+            $from = $from->getTimestamp() * 1000;
+        }
+        if ($to instanceof \DateTime) {
+            $to = $to->getTimestamp() * 1000;
+        }
+        $query = array_filter([
+            'from'   => $from,
+            'to'     => $to,
+            'lastId' => $lastId,
         ]);
+        $response = $this->get('tasks/all', compact('query'));
 
         $tasks  = [];
         $json   = $response->json(['object' => true]);
