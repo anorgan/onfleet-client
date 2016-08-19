@@ -213,35 +213,35 @@ class Task extends Entity
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getCompleteAfter()
     {
-        return $this->completeAfter;
+        return $this->toDateTime($this->completeAfter);
     }
 
     /**
-     * @param mixed $completeAfter
+     * @param int|\DateTime $completeAfter
      */
     public function setCompleteAfter($completeAfter)
     {
-        $this->completeAfter = $completeAfter;
+        $this->completeAfter = $this->toTimestamp($completeAfter);
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getCompleteBefore()
     {
-        return $this->completeBefore;
+        return $this->toDateTime($this->completeBefore);
     }
 
     /**
-     * @param mixed $completeBefore
+     * @param int|\DateTime $completeBefore
      */
     public function setCompleteBefore($completeBefore)
     {
-        $this->completeBefore = $completeBefore;
+        $this->completeBefore = $this->toTimestamp($completeBefore);
     }
 
     /**
@@ -373,19 +373,19 @@ class Task extends Entity
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getTimeCreated()
     {
-        return $this->timeCreated;
+        return $this->toDateTime($this->timeCreated);
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getTimeLastModified()
     {
-        return $this->timeLastModified;
+        return $this->toDateTime($this->timeLastModified);
     }
 
     /**
@@ -464,8 +464,8 @@ class Task extends Entity
      * @param string $autoAssignMode             The desired automatic assignment mode. Either distance or load.
      * @param Team $autoAssignTeam               Optional. The team from which to pick the workers to consider for
      *                                           automatic assignment.
-     * @param int $completeAfter                 Optional. A timestamp for the earliest time the task should be completed.
-     * @param int $completeBefore                Optional. A timestamp for the latest time the task should be completed.
+     * @param int|\DateTime $completeAfter                 Optional. A timestamp for the earliest time the task should be completed.
+     * @param int|\DateTime $completeBefore                Optional. A timestamp for the latest time the task should be completed.
      * @param bool $pickupTask                   Optional. Whether the task is a pickup task.
      * @param array|null $dependencies           Optional. One or more IDs of tasks which must be completed prior to this task.
      * @param int $quantity                      Optional. The number of units to be dropped off while completing this

@@ -102,6 +102,22 @@ class Team extends Entity
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getTimeCreated()
+    {
+        return $this->toDateTime($this->timeCreated);
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getTimeLastModified()
+    {
+        return $this->toDateTime($this->timeLastModified);
+    }
+
+    /**
      * @param array $metadata
      * @internal
      */

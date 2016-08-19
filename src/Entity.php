@@ -184,6 +184,30 @@ abstract class Entity
     }
 
     /**
+     * @param int $timestamp Timestamp in milliseconds
+     * @return \DateTime
+     */
+    protected function toDateTime($timestamp): \DateTime
+    {
+        $date = new \DateTime();
+        $date->setTimestamp($timestamp / 1000);
+        return $date;
+    }
+
+    /**
+     * @param int|\DateTime $time
+     * @return int
+     */
+    protected function toTimestamp($time)
+    {
+        if ($time instanceof \DateTime) {
+            $time = $time->getTimestamp() * 1000;
+        }
+
+        return $time;
+    }
+
+    /**
      * @param Entity $entity
      * @param object $data
      */

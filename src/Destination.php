@@ -84,19 +84,19 @@ class Destination extends Entity
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getTimeCreated()
     {
-        return $this->timeCreated;
+        return $this->toDateTime($this->timeCreated);
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getTimeLastModified()
     {
-        return $this->timeLastModified;
+        return $this->toDateTime($this->timeLastModified);
     }
 
     /**
