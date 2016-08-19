@@ -87,6 +87,7 @@ class Client extends Guzzle
     /**
      * Get delegatee organization
      *
+     * @param string $id
      * @return Organization
      */
     public function getOrganization($id): Organization
