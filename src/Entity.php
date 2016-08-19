@@ -171,7 +171,7 @@ abstract class Entity
     }
 
     /**
-     * @param $json
+     * @param object $json
      * @param Client $client
      * @return static
      */

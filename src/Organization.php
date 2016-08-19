@@ -40,27 +40,11 @@ class Organization extends Entity
     }
 
     /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
      * @return mixed
      */
     public function getEmail()
     {
         return $this->email;
-    }
-
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
     }
 
     /**
@@ -72,27 +56,11 @@ class Organization extends Entity
     }
 
     /**
-     * @param mixed $image
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getTimezone()
     {
         return $this->timezone;
-    }
-
-    /**
-     * @param mixed $timezone
-     */
-    public function setTimezone($timezone)
-    {
-        $this->timezone = $timezone;
     }
 
     /**
@@ -104,27 +72,11 @@ class Organization extends Entity
     }
 
     /**
-     * @param mixed $country
-     */
-    public function setCountry($country)
-    {
-        $this->country = $country;
-    }
-
-    /**
      * @return array
      */
     public function getDelegatees(): array
     {
         return $this->delegatees;
-    }
-
-    /**
-     * @param array $delegatees
-     */
-    public function setDelegatees(array $delegatees)
-    {
-        $this->delegatees = $delegatees;
     }
 
     /**

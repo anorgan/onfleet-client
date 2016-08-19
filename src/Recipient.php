@@ -32,7 +32,7 @@ class Recipient extends Entity
     ];
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -40,7 +40,7 @@ class Recipient extends Entity
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -48,7 +48,7 @@ class Recipient extends Entity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPhone()
     {
@@ -56,7 +56,7 @@ class Recipient extends Entity
     }
 
     /**
-     * @param mixed $phone
+     * @param string $phone
      */
     public function setPhone($phone)
     {
@@ -104,7 +104,7 @@ class Recipient extends Entity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getOrganization()
     {

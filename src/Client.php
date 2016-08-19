@@ -35,7 +35,7 @@ class Client extends Guzzle
     }
 
     /**
-     * @param null $url
+     * @param string $url
      * @param array $options
      * @throws \Exception
      * @return \GuzzleHttp\Message\ResponseInterface
@@ -59,7 +59,7 @@ class Client extends Guzzle
     }
 
     /**
-     * @param null $url
+     * @param string $url
      * @param array $options
      * @return \GuzzleHttp\Message\ResponseInterface|null
      */
@@ -241,7 +241,7 @@ class Client extends Guzzle
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @return Team
      */
     public function getTeam($id): Team
@@ -283,7 +283,7 @@ class Client extends Guzzle
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @return Destination
      */
     public function getDestination($id): Destination
@@ -314,7 +314,7 @@ class Client extends Guzzle
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @return Recipient
      */
     public function getRecipient($id): Recipient
@@ -401,7 +401,7 @@ class Client extends Guzzle
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @return Task
      */
     public function getTask($id): Task
@@ -411,7 +411,7 @@ class Client extends Guzzle
     }
 
     /**
-     * @param $shortId
+     * @param string $shortId
      * @return Task
      */
     public function getTaskByShortId($shortId): Task
@@ -481,8 +481,8 @@ class Client extends Guzzle
     }
 
     /**
-     * @param $url
-     * @param $triggerId
+     * @param string $url
+     * @param int $triggerId
      * @return Webhook
      */
     public function createWebhook($url, $triggerId): Webhook
