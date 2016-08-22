@@ -4,44 +4,22 @@ namespace OnFleet\Tests;
 
 use GuzzleHttp\Message\Response;
 use GuzzleHttp\Stream\Stream;
-use GuzzleHttp\Subscriber\History;
-use GuzzleHttp\Subscriber\Mock;
 use OnFleet\Administrator;
 use OnFleet\Client;
 use OnFleet\Organization;
-use PHPUnit\Framework\TestCase;
 
-class ClientTest extends TestCase
+/**
+ * Class ClientTest
+ * @package OnFleet\Tests
+ * @covers OnFleet\Client
+ */
+class ClientTest extends ApiTestCase
 {
     /**
-     * @var Client
-     */
-    protected $subject;
-
-    /**
-     * @var Mock
-     */
-    protected $mockedResponses;
-
-    /**
-     * @var History
-     */
-    protected $history;
-
-    public function setUp()
-    {
-        $this->subject = new Client(null);
-        $this->mockedResponses = new Mock();
-        $this->history = new History();
-
-        $this->subject->getEmitter()->attach($this->history);
-        $this->subject->getEmitter()->attach($this->mockedResponses);
-    }
-
-    /**
      * @covers OnFleet\Client::getMyOrganization
+     * @covers OnFleet\Organization
      */
-    public function testGettingMyOrganization()
+    public function testGettingMyOrganizationReturnsOrganization()
     {
         // Arrange
         $this->mockedResponses->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
@@ -60,7 +38,7 @@ class ClientTest extends TestCase
         }')));
 
         // Act
-        $organization = $this->subject->getMyOrganization();
+        $organization = $this->client->getMyOrganization();
 
         // Assert
         $this->assertInstanceOf(Organization::class, $organization);
@@ -76,8 +54,9 @@ class ClientTest extends TestCase
 
     /**
      * @covers OnFleet\Client::getOrganization
+     * @covers OnFleet\Organization
      */
-    public function testGettingDelegateeOrganization()
+    public function testGettingDelegateeOrganizationReturnsOrganization()
     {
         // Arrange
         $this->mockedResponses->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
@@ -90,7 +69,7 @@ class ClientTest extends TestCase
         }')));
 
         // Act
-        $organization = $this->subject->getOrganization('cBrUjKvQQgdRp~s1qvQNLpK*');
+        $organization = $this->client->getOrganization('cBrUjKvQQgdRp~s1qvQNLpK*');
 
         // Assert
         $this->assertInstanceOf(Organization::class, $organization);
@@ -102,12 +81,13 @@ class ClientTest extends TestCase
 
     /**
      * @covers OnFleet\Client::createAdministrator
+     * @covers OnFleet\Administrator
      */
-    public function testCreatingAdministrator()
+    public function testCreatingAdministratorCreatesAndReturnsAdministrator()
     {
         // Arrange
-        $this->mockedResponses->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
-        {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('{
             "id": "8AxaiKwMd~np7I*YP2NfukBE",
             "timeCreated": 1455156651000,
             "timeLastModified": 1455156651779,
@@ -125,19 +105,16 @@ class ClientTest extends TestCase
         ];
 
         // Act
-        $administrator = $this->subject->createAdministrator($adminData);
+        $administrator = $this->client->createAdministrator($adminData);
 
         // Assert
-        $request = $this->history->getLastRequest();
-        $this->assertEquals('application/json', $request->getHeader('Content-type'));
-        $this->assertEquals('https://onfleet.com/api/v2/admins', $request->getUrl());
-        $this->assertEquals('POST', $request->getMethod());
+        $this->assertRequestIsPost('admins', $adminData);
 
         $this->assertInstanceOf(Administrator::class, $administrator);
         $this->assertEquals('yAM*fDkztrT3gUcz9mNDgNOL', $administrator->getOrganization());
         $this->assertEquals('dispatcher@example.com', $administrator->getEmail());
         $this->assertEquals('Admin Dispatcher', $administrator->getName());
-        $this->assertEquals('Admin Dispatcher', $administrator->getName());
+        $this->assertEquals('standard', $administrator->getType());
         $this->assertFalse($administrator->isActive());
     }
 }

@@ -11,6 +11,11 @@
       "OnFleet\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "OnFleet\\Tests\\": "tests/"
+    }
+  },
   "require": {
     "php": ">=7.0",
     "guzzlehttp/guzzle": "^5.3"
