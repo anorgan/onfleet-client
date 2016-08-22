@@ -45,6 +45,17 @@ class ApiTestCase extends TestCase
     }
 
     /**
+     * @param string $path
+     */
+    public function assertRequestIsGet($path)
+    {
+        $request = $this->history->getLastRequest();
+        $this->assertEquals('GET', $request->getMethod());
+
+        $this->assertEquals($this->baseUrl . $path, $request->getUrl());
+    }
+
+    /**
      * Assert request is post, has JSON content type and optionally check payload data
      *
      * @param string $path

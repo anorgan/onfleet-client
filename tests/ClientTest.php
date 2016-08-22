@@ -41,6 +41,8 @@ class ClientTest extends ApiTestCase
         $organization = $this->client->getMyOrganization();
 
         // Assert
+        $this->assertRequestIsGet('organization');
+
         $this->assertInstanceOf(Organization::class, $organization);
         $this->assertEquals('yAM*fDkztrT3gUcz9mNDgNOL', $organization->getId());
         $this->assertEquals(\DateTime::createFromFormat('U', 1454634415), $organization->getTimeCreated());
@@ -72,6 +74,8 @@ class ClientTest extends ApiTestCase
         $organization = $this->client->getOrganization('cBrUjKvQQgdRp~s1qvQNLpK*');
 
         // Assert
+        $this->assertRequestIsGet('organizations/cBrUjKvQQgdRp~s1qvQNLpK*');
+
         $this->assertInstanceOf(Organization::class, $organization);
         $this->assertEquals('cBrUjKvQQgdRp~s1qvQNLpK*', $organization->getId());
         $this->assertEquals('dev@onfleet.com', $organization->getEmail());
@@ -116,5 +120,50 @@ class ClientTest extends ApiTestCase
         $this->assertEquals('Admin Dispatcher', $administrator->getName());
         $this->assertEquals('standard', $administrator->getType());
         $this->assertFalse($administrator->isActive());
+    }
+
+    /**
+     * @covers OnFleet\Client::getAdministrators
+     * @covers OnFleet\Administrator
+     */
+    public function testGettingAdministratorsReturnsArrayOfAdministrators()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            [
+                {
+                    "id": "8AxaiKwMd~np7I*YP2NfukBE",
+                    "timeCreated": 1455156651000,
+                    "timeLastModified": 1455156651779,
+                    "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
+                    "email": "super.admin@example.com",
+                    "type": "super",
+                    "name": "Super Admin",
+                    "isActive": true,
+                    "metadata": []
+                },
+                {
+                    "id": "8AxaiKwMd~np7I*YP2NfukBE",
+                    "timeCreated": 1455156651000,
+                    "timeLastModified": 1455156651779,
+                    "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
+                    "email": "dispatcher.admin@example.com",
+                    "type": "standard",
+                    "name": "Dispatcher Admin",
+                    "isActive": false,
+                    "metadata": []
+                }
+            ]
+            ')));
+
+        $administrators = $this->client->getAdministrators();
+
+        $this->assertRequestIsGet('admins');
+
+        $this->assertCount(2, $administrators);
+        $administrator = $administrators[0];
+        $this->assertEquals('8AxaiKwMd~np7I*YP2NfukBE', $administrator->getId());
+        $this->assertEquals('super', $administrator->getType());
+        $this->assertTrue($administrator->isActive());
     }
 }
