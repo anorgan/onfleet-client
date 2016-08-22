@@ -105,19 +105,11 @@ class Worker extends Entity
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getOnDuty()
+    public function isOnDuty()
     {
         return $this->onDuty;
-    }
-
-    /**
-     * @param mixed $onDuty
-     */
-    public function setOnDuty($onDuty)
-    {
-        $this->onDuty = $onDuty;
     }
 
     /**
@@ -126,14 +118,6 @@ class Worker extends Entity
     public function getLocation()
     {
         return $this->location;
-    }
-
-    /**
-     * @param mixed $location
-     */
-    public function setLocation($location)
-    {
-        $this->location = $location;
     }
 
     /**

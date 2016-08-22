@@ -156,13 +156,12 @@ class Client extends Guzzle
      */
     public function getWorkers($filter = null, $teams = null, $states = null): array
     {
-        $response = $this->get('workers', [
-            'query' => [
-                'filter' => $filter,
-                'teams'  => $teams,
-                'states' => $states,
-            ],
+        $query = array_filter([
+            'filter' => $filter,
+            'teams'  => $teams,
+            'states' => $states,
         ]);
+        $response = $this->get('workers', compact('query'));
 
         $workers = [];
         foreach ($response->json(['object' => true]) as $workerData) {
@@ -184,12 +183,11 @@ class Client extends Guzzle
      */
     public function getWorker($id, $filter = null, $analytics = false): Worker
     {
-        $response = $this->get('workers/'. $id, [
-            'query' => [
-                'filter'    => $filter,
-                'analytics' => $analytics ? 'true' : 'false',
-            ],
+        $query = array_filter([
+            'filter'    => $filter,
+            'analytics' => $analytics ? 'true' : 'false',
         ]);
+        $response = $this->get('workers/'. $id, compact('query'));
 
         return Worker::fromJson($response->json(['object' => true]), $this);
     }
