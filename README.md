@@ -13,7 +13,7 @@ Install via [Composer](http://getcomposer.org) by running `composer require anor
 ```json
 {
     "require": {
-       "anorgan/onfleet-api": "^0.9"
+       "anorgan/onfleet-api": "^1.0"
     }
 }
 ```
