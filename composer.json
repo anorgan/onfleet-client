@@ -9,12 +9,12 @@
   ],
   "autoload": {
     "psr-4": {
-      "OnFleet\\": "src/"
+      "Anorgan\\OnFleet\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "OnFleet\\Tests\\": "tests/"
+      "Anorgan\\OnFleet\\Tests\\": "tests/"
     }
   },
   "require": {

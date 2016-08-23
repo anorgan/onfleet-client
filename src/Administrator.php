@@ -1,10 +1,10 @@
 <?php
 
-namespace OnFleet;
+namespace Anorgan\OnFleet;
 
 /**
  * Class Administrator
- * @package OnFleet
+ * @package Anorgan\OnFleet
  */
 class Administrator extends Entity
 {

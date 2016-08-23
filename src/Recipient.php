@@ -1,10 +1,10 @@
 <?php
 
-namespace OnFleet;
+namespace Anorgan\OnFleet;
 
 /**
  * Class Recipient
- * @package OnFleet
+ * @package Anorgan\OnFleet
  */
 class Recipient extends Entity
 {

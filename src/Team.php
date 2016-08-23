@@ -1,10 +1,10 @@
 <?php
 
-namespace OnFleet;
+namespace Anorgan\OnFleet;
 
 /**
  * Class Team
- * @package OnFleet
+ * @package Anorgan\OnFleet
  */
 class Team extends Entity
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace OnFleet;
+namespace Anorgan\OnFleet;
 
 /**
  * Class Webhook
- * @package OnFleet
+ * @package Anorgan\OnFleet
  */
 class Webhook extends Entity
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace OnFleet\Tests;
+namespace Anorgan\OnFleet\Tests;
 
 use GuzzleHttp\Subscriber\History;
 use GuzzleHttp\Subscriber\Mock;
-use OnFleet\Client;
+use Anorgan\OnFleet\Client;
 use PHPUnit\Framework\TestCase;
 
 class ApiTestCase extends TestCase

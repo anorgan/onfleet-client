@@ -8,7 +8,7 @@ PHP API Client for [OnFleet](https://onfleet.com) service
 
 ## Instalation
 
-Install via [Composer](http://getcomposer.org) by running `composer require anorgan/onfleet-client ^0.9`.
+Install via [Composer](http://getcomposer.org) by running `composer require anorgan/onfleet-client ^1.0`.
 
 ```json
 {
@@ -23,7 +23,7 @@ Install via [Composer](http://getcomposer.org) by running `composer require anor
 ```php
 <?php
 
-$onFleet = new OnFleet\Client('onFleetUserName');
+$onFleet = new Anorgan\OnFleet\Client('onFleetUserName');
 
 // Get your Organization
 $organization = $onFleet->getMyOrganization();
@@ -143,7 +143,7 @@ $task->complete(true, 'Successful completion note');
 $task->delete();
 
 // Create webhook
-$webhook = $onFleet->createWebhook('http://example.com/webhook/onFleet/taskCreated', \OnFleet\Webhook::TRIGGER_TASK_CREATED);
+$webhook = $onFleet->createWebhook('http://example.com/webhook/onFleet/taskCreated', Anorgan\OnFleet\Webhook::TRIGGER_TASK_CREATED);
 
 // Delete webhook
 $webhook->delete();
