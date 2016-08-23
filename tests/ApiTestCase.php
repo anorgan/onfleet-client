@@ -36,9 +36,9 @@ class ApiTestCase extends TestCase
      */
     public function setUp()
     {
-        $this->client = new Client(null);
+        $this->client          = new Client(null);
         $this->mockedResponses = new Mock();
-        $this->history = new History();
+        $this->history         = new History();
 
         $this->client->getEmitter()->attach($this->history);
         $this->client->getEmitter()->attach($this->mockedResponses);

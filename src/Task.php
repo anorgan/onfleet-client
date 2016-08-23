@@ -100,7 +100,7 @@ class Task extends Entity
     ];
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getOrganization()
     {
@@ -108,7 +108,7 @@ class Task extends Entity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShortId()
     {
@@ -116,7 +116,7 @@ class Task extends Entity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTrackingURL()
     {
@@ -133,7 +133,7 @@ class Task extends Entity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getMerchant()
     {
@@ -141,7 +141,7 @@ class Task extends Entity
     }
 
     /**
-     * @param mixed $merchant
+     * @param string $merchant
      */
     public function setMerchant($merchant)
     {
@@ -149,7 +149,7 @@ class Task extends Entity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getExecutor()
     {
@@ -157,7 +157,7 @@ class Task extends Entity
     }
 
     /**
-     * @param mixed $executor
+     * @param string $executor
      */
     public function setExecutor($executor)
     {
@@ -357,7 +357,7 @@ class Task extends Entity
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDestination()
     {
@@ -365,7 +365,7 @@ class Task extends Entity
     }
 
     /**
-     * @param mixed $destination
+     * @param string $destination
      */
     public function setDestination($destination)
     {

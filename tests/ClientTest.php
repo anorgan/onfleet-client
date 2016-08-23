@@ -111,7 +111,7 @@ class ClientTest extends ApiTestCase
         }')));
 
         $adminData = [
-            'name' => 'Admin Dispatcher',
+            'name'  => 'Admin Dispatcher',
             'email' => 'dispatcher@example.com',
         ];
 
@@ -210,7 +210,7 @@ class ClientTest extends ApiTestCase
             ')));
 
         $data = [
-            'name' => 'Worker Workowsky',
+            'name'  => 'Worker Workowsky',
             'phone' => '+16173428853',
             'teams' => [
                 'nz1nG1Hpx9EHjQCJsT2VAs~o'
@@ -467,7 +467,7 @@ class ClientTest extends ApiTestCase
             ')));
 
         $data = [
-            'name' => 'Team',
+            'name'    => 'Team',
             'workers' => [
                 'sFtvhYK2l26zS0imptJJdC2q',
                 'h*wSb*apKlDkUFnuLTtjPke7',
@@ -583,15 +583,15 @@ class ClientTest extends ApiTestCase
 
         $data = [
             'address' => [
-                'number' => '23',
-                'street' => 'Howard Street',
-                'apartment' => '5th Floor',
-                'city' => 'San Francisco',
-                'country' => 'United States',
-                'state' => 'California',
+                'number'     => '23',
+                'street'     => 'Howard Street',
+                'apartment'  => '5th Floor',
+                'city'       => 'San Francisco',
+                'country'    => 'United States',
+                'state'      => 'California',
                 'postalCode' => '94105',
             ],
-            'notes' => 'Don\'t forget to check out the epic rooftop.',
+            'notes'    => 'Don\'t forget to check out the epic rooftop.',
             'location' => [
                 -122.3965731,
                 37.7875728,
@@ -942,7 +942,7 @@ class ClientTest extends ApiTestCase
             }
             ')));
         $from = \DateTime::createFromFormat('Y-m-d H:i:s', '2016-08-20 16:20:00');
-        $to = clone $from;
+        $to   = clone $from;
         $to->add(new \DateInterval('PT10M'));
         $lastId = null;
 
@@ -1140,7 +1140,7 @@ class ClientTest extends ApiTestCase
         $webhook = $this->client->createWebhook('http://requestb.in/11sl22k1', Webhook::TRIGGER_TASK_CREATED);
 
         $this->assertRequestIsPost('webhooks', [
-            'url' => 'http://requestb.in/11sl22k1',
+            'url'     => 'http://requestb.in/11sl22k1',
             'trigger' => 6
         ]);
         $this->assertInstanceOf(Webhook::class, $webhook);
