@@ -343,6 +343,7 @@ class Client extends Guzzle
      */
     public function getRecipientByPhone($phone)
     {
+        $phone = preg_replace('/[^\d]/', '', $phone);
         $response = $this->get('recipients/phone/'. $phone);
 
         if (null === $response) {

@@ -9,7 +9,10 @@ use OnFleet\Client;
 use OnFleet\Destination;
 use OnFleet\Hub;
 use OnFleet\Organization;
+use OnFleet\Recipient;
+use OnFleet\Task;
 use OnFleet\Team;
+use OnFleet\Webhook;
 use OnFleet\Worker;
 
 /**
@@ -62,7 +65,7 @@ class ClientTest extends ApiTestCase
      * @covers OnFleet\Client::getOrganization
      * @covers OnFleet\Organization
      */
-    public function testGettingDelegateeOrganizationReturnsOrganization()
+    public function testGettingDelegateeOrganizationByIdReturnsOrganization()
     {
         // Arrange
         $this->mockedResponses->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
@@ -340,7 +343,7 @@ class ClientTest extends ApiTestCase
      * @covers OnFleet\Client::getWorker
      * @covers OnFleet\Worker
      */
-    public function testGettingWorkerReturnsWorker()
+    public function testGettingWorkerByIdReturnsWorker()
     {
         $this->mockedResponses
             ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
@@ -522,7 +525,7 @@ class ClientTest extends ApiTestCase
      * @covers OnFleet\Client::getTeam
      * @covers OnFleet\Team
      */
-    public function testGettingTeamReturnsTeam()
+    public function testGettingTeamByIdReturnsTeam()
     {
         $this->mockedResponses
             ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
@@ -606,7 +609,7 @@ class ClientTest extends ApiTestCase
      * @covers OnFleet\Client::getDestination
      * @covers OnFleet\Destination
      */
-    public function testGettingDestinationReturnsDestination()
+    public function testGettingDestinationByIdReturnsDestination()
     {
         $this->mockedResponses
             ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
@@ -641,5 +644,542 @@ class ClientTest extends ApiTestCase
             -122.3965731,
             37.7875728
         ], $destination->getLocation());
+    }
+
+    /**
+     * @covers OnFleet\Client::createRecipient
+     * @covers OnFleet\Recipient
+     */
+    public function testCreatingRecipientCreatesAndReturnsRecipient()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            {
+                "id": "VVLx5OdKvw0dRSjT2rGOc6Y*",
+                "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
+                "timeCreated": 1455156665000,
+                "timeLastModified": 1455156665390,
+                "name": "Boris Foster",
+                "phone": "+16505551133",
+                "notes": "Always orders our GSC special",
+                "skipSMSNotifications": false,
+                "metadata": []
+            }
+            ')));
+
+        $data = [
+            'name'  => 'Boris Foster',
+            'phone' => '650-555-1133',
+            'notes' => 'Always orders our GSC special'
+        ];
+        $recipient = $this->client->createRecipient($data);
+
+        $this->assertRequestIsPost('recipients', $data);
+        $this->assertInstanceOf(Recipient::class, $recipient);
+        $this->assertEquals('VVLx5OdKvw0dRSjT2rGOc6Y*', $recipient->getId());
+        $this->assertEquals('Always orders our GSC special', $recipient->getNotes());
+        $this->assertEquals('+16505551133', $recipient->getPhone());
+    }
+
+    /**
+     * @covers OnFleet\Client::getRecipient
+     * @covers OnFleet\Recipient
+     */
+    public function testGettingRecipientByIdReturnsRecipient()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            {
+                "id": "VVLx5OdKvw0dRSjT2rGOc6Y*",
+                "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
+                "timeCreated": 1455156665000,
+                "timeLastModified": 1455156665390,
+                "name": "Boris Foster",
+                "phone": "+16505551133",
+                "notes": "Always orders our GSC special",
+                "skipSMSNotifications": false,
+                "metadata": []
+            }
+            ')));
+
+        $recipient = $this->client->getRecipient('VVLx5OdKvw0dRSjT2rGOc6Y*');
+
+        $this->assertRequestIsGet('recipients/VVLx5OdKvw0dRSjT2rGOc6Y*');
+        $this->assertInstanceOf(Recipient::class, $recipient);
+        $this->assertEquals('VVLx5OdKvw0dRSjT2rGOc6Y*', $recipient->getId());
+        $this->assertFalse($recipient->isSMSNotificationSkipped());
+    }
+
+    /**
+     * @covers OnFleet\Client::getRecipientByName
+     * @covers OnFleet\Recipient
+     */
+    public function testGettingRecipientByNameReturnsRecipient()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            {
+                "id": "VVLx5OdKvw0dRSjT2rGOc6Y*",
+                "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
+                "timeCreated": 1455156665000,
+                "timeLastModified": 1455156665390,
+                "name": "Boris Foster",
+                "phone": "+16505551133",
+                "notes": "Always orders our GSC special",
+                "skipSMSNotifications": false,
+                "metadata": []
+            }
+            ')));
+
+        $recipient = $this->client->getRecipientByName('Boris Foster');
+
+        $this->assertRequestIsGet('recipients/name/boris%20foster');
+        $this->assertInstanceOf(Recipient::class, $recipient);
+        $this->assertEquals('VVLx5OdKvw0dRSjT2rGOc6Y*', $recipient->getId());
+        $this->assertFalse($recipient->isSMSNotificationSkipped());
+    }
+
+    /**
+     * @covers OnFleet\Client::getRecipientByPhone
+     * @covers OnFleet\Recipient
+     */
+    public function testGettingRecipientByPhoneReturnsRecipient()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            {
+                "id": "VVLx5OdKvw0dRSjT2rGOc6Y*",
+                "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
+                "timeCreated": 1455156665000,
+                "timeLastModified": 1455156665390,
+                "name": "Boris Foster",
+                "phone": "+16505551133",
+                "notes": "Always orders our GSC special",
+                "skipSMSNotifications": false,
+                "metadata": []
+            }
+            ')));
+
+        $recipient = $this->client->getRecipientByPhone('(650)-555-1133');
+
+        $this->assertRequestIsGet('recipients/phone/6505551133');
+        $this->assertInstanceOf(Recipient::class, $recipient);
+        $this->assertEquals('VVLx5OdKvw0dRSjT2rGOc6Y*', $recipient->getId());
+        $this->assertFalse($recipient->isSMSNotificationSkipped());
+    }
+
+    /**
+     * @covers OnFleet\Client::createTask
+     * @covers OnFleet\Task
+     */
+    public function testCreatingATaskReturnsTask()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            {
+                "id": "kc8SS1tzuZ~jqjlebKGrUmpe",
+                "timeCreated": 1455156667000,
+                "timeLastModified": 1455156667234,
+                "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
+                "shortId": "8f983639",
+                "trackingURL": "https://onf.lt/8f98363993",
+                "worker": "1LjhGUWdxFbvdsTAAXs0TFos",
+                "merchant": "yAM*fDkztrT3gUcz9mNDgNOL",
+                "executor": "yAM*fDkztrT3gUcz9mNDgNOL",
+                "creator": "EJmsbJgHiRLPjNVE7GEIPs7*",
+                "dependencies": [],
+                "state": 0,
+                "completeAfter": 1455151071727,
+                "completeBefore": null,
+                "pickupTask": false,
+                "notes": "Order 332: 24oz Stumptown Finca El Puente, 10 x Aji de Gallina Empanadas, 13-inch Lelenitas Tres Leches",
+                "completionDetails": {
+                    "events": [],
+                    "time": null
+                },
+                "feedback": [],
+                "metadata": [],
+                "overrides": {
+                    "recipientSkipSMSNotifications": null,
+                    "recipientNotes": null,
+                    "recipientName": null
+                },
+                "container": {
+                    "type": "WORKER",
+                    "worker": "1LjhGUWdxFbvdsTAAXs0TFos"
+                },
+                "recipients": [
+                    {
+                        "id": "G7rcM2nqblmh8vj2do1FpaOQ",
+                        "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
+                        "timeCreated": 1455156667000,
+                        "timeLastModified": 1455156667229,
+                        "name": "Blas Silkovich",
+                        "phone": "+16505554481",
+                        "notes": "Knows Neiman, VIP status.",
+                        "skipSMSNotifications": false,
+                        "metadata": []
+                    }
+                ],
+                "destination": {
+                    "id": "zrVXZi5aDzOZlAghZaLfGAfA",
+                    "timeCreated": 1455156667000,
+                    "timeLastModified": 1455156667220,
+                    "location": [
+                        -122.4438337,
+                        37.7940329
+                    ],
+                    "address": {
+                        "apartment": "",
+                        "state": "California",
+                        "postalCode": "94123",
+                        "country": "United States",
+                        "city": "San Francisco",
+                        "street": "Vallejo Street",
+                        "number": "2829"
+                    },
+                    "notes": "Small green door by garage door has pin pad, enter *4821*",
+                    "metadata": []
+                },
+                "didAutoAssign": true
+            }
+            ')));
+
+        $data = [
+            'destination' => 'zrVXZi5aDzOZlAghZaLfGAfA',
+            'recipients'  => [
+                'G7rcM2nqblmh8vj2do1FpaOQ'
+            ],
+            'merchant'    => 'cBrUjKvQQgdRp~s1qvQNLpK*',
+            'executor'    => 'cBrUjKvQQgdRp~s1qvQNLpK*',
+            'autoAssign'  => [
+                'mode' => 'load',
+            ],
+        ];
+        $task = $this->client->createTask($data);
+
+        $this->assertRequestIsPost('tasks', $data);
+        $this->assertInstanceOf(Task::class, $task);
+        $this->assertTrue($task->isAutoAssigned());
+        $this->assertEquals('1LjhGUWdxFbvdsTAAXs0TFos', $task->getWorker());
+        $this->assertEquals(0, $task->getState());
+    }
+
+    /**
+     * @covers OnFleet\Client::getTasks
+     * @covers OnFleet\Task
+     */
+    public function testGettingTasksReturnsArrayOfTasks()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            {
+                "lastId": "tPMO~h03sOIqFbnhqaOXgUsd",
+                "tasks": [
+                    {
+                        "id": "11z1BbsQUZFHD1XAd~emDDeK",
+                        "timeCreated": 1455072025000,
+                        "timeLastModified": 1455072025278,
+                        "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
+                        "shortId": "31aac0a5",
+                        "trackingURL": "https://onf.lt/31aac0a5c",
+                        "worker": "h*wSb*apKlDkUFnuLTtjPke7",
+                        "merchant": "yAM*fDkztrT3gUcz9mNDgNOL",
+                        "executor": "yAM*fDkztrT3gUcz9mNDgNOL",
+                        "creator": "EJmsbJgHiRLPjNVE7GEIPs7*",
+                        "dependencies": [],
+                        "state": 1,
+                        "completeAfter": null,
+                        "completeBefore": null,
+                        "pickupTask": false,
+                        "notes": "",
+                        "completionDetails": {
+                            "events": [],
+                            "time": null
+                        },
+                        "feedback": [],
+                        "metadata": [],
+                        "overrides": {},
+                        "container": {
+                            "type": "WORKER",
+                            "worker": "h*wSb*apKlDkUFnuLTtjPke7"
+                        },
+                        "recipients": [
+                            {
+                                "id": "xX87G1gSkeLvGXlHn2tn0~iB",
+                                "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
+                                "timeCreated": 1455072004000,
+                                "timeLastModified": 1455072025272,
+                                "name": "Blake Turing",
+                                "phone": "+16505552811",
+                                "notes": "",
+                                "skipSMSNotifications": false,
+                                "metadata": []
+                            }
+                        ],
+                        "destination": {
+                            "id": "pfT5L1JclTdhvRnP9GQzMFuL",
+                            "timeCreated": 1455072025000,
+                            "timeLastModified": 1455072025264,
+                            "location": [
+                                -122.41289010000003,
+                                37.787933
+                            ],
+                            "address": {
+                                "apartment": "",
+                                "state": "California",
+                                "postalCode": "94109",
+                                "country": "United States",
+                                "city": "San Francisco",
+                                "street": "Post Street",
+                                "number": "666"
+                            },
+                            "notes": "",
+                            "metadata": []
+                        }
+                    }
+                ]
+            }
+            ')));
+        $from = \DateTime::createFromFormat('Y-m-d H:i:s', '2016-08-20 16:20:00');
+        $to = clone $from;
+        $to->add(new \DateInterval('PT10M'));
+        $lastId = null;
+
+        $tasks = $this->client->getTasks($from, $to, $lastId);
+
+        $this->assertRequestIsGet('tasks/all?from=1471710000000&to=1471710600000');
+        $this->assertCount(1, $tasks);
+        $this->assertEquals('tPMO~h03sOIqFbnhqaOXgUsd', $lastId);
+    }
+
+    /**
+     * @covers OnFleet\Client::getTask
+     * @covers OnFleet\Task
+     */
+    public function testGettingTaskByIdReturnsTask()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            {
+                "id": "11z1BbsQUZFHD1XAd~emDDeK"
+            }
+            ')));
+
+        $task = $this->client->getTask('11z1BbsQUZFHD1XAd~emDDeK');
+
+        $this->assertRequestIsGet('tasks/11z1BbsQUZFHD1XAd~emDDeK');
+        $this->assertInstanceOf(Task::class, $task);
+        $this->assertEquals('11z1BbsQUZFHD1XAd~emDDeK', $task->getId());
+    }
+
+    /**
+     * @covers OnFleet\Client::getTaskByShortId
+     * @covers OnFleet\Task
+     */
+    public function testGettingTaskByShortIdReturnsTask()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            {
+                "id": "11z1BbsQUZFHD1XAd~emDDeK",
+                "shortId": "31aac0a5"
+            }
+            ')));
+
+        $task = $this->client->getTaskByShortId('31aac0a5');
+
+        $this->assertRequestIsGet('tasks/shortId/31aac0a5');
+        $this->assertInstanceOf(Task::class, $task);
+        $this->assertEquals('11z1BbsQUZFHD1XAd~emDDeK', $task->getId());
+        $this->assertEquals('31aac0a5', $task->getShortId());
+    }
+
+    /**
+     * @covers OnFleet\Client::setOrganizationTasks
+     */
+    public function testSettingOrganizationTasks()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+
+        $taskIds = [
+            '11z1BbsQUZFHD1XAd~emDDeK',
+            'kc8SS1tzuZ~jqjlebKGrUmpe'
+        ];
+        $this->client->setOrganizationTasks($taskIds, 'yAM*fDkztrT3gUcz9mNDgNOL');
+
+        $this->assertRequestIsPut('containers/organizations/yAM*fDkztrT3gUcz9mNDgNOL', [
+            'tasks' => $taskIds
+        ]);
+    }
+
+    /**
+     * @covers OnFleet\Client::setTeamTasks
+     */
+    public function testSettingTeamTasks()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+
+        $taskIds = [
+            '11z1BbsQUZFHD1XAd~emDDeK',
+            'kc8SS1tzuZ~jqjlebKGrUmpe'
+        ];
+        $this->client->setTeamTasks($taskIds, 'E4s6bwGpOZp6pSU3Hz*2ngFA');
+
+        $this->assertRequestIsPut('containers/teams/E4s6bwGpOZp6pSU3Hz*2ngFA', [
+            'tasks' => $taskIds
+        ]);
+    }
+
+    /**
+     * @covers OnFleet\Client::setWorkerTasks
+     */
+    public function testSettingWorkerTasks()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+
+        $taskIds = [
+            '11z1BbsQUZFHD1XAd~emDDeK',
+            'kc8SS1tzuZ~jqjlebKGrUmpe'
+        ];
+        $this->client->setWorkerTasks($taskIds, 'h*wSb*apKlDkUFnuLTtjPke7');
+
+        $this->assertRequestIsPut('containers/workers/h*wSb*apKlDkUFnuLTtjPke7', [
+            'tasks' => $taskIds
+        ]);
+    }
+
+    /**
+     * @covers OnFleet\Client::addTasksToOrganization
+     */
+    public function testAddingTasksToOrganization()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+
+        $taskIds = [
+            '11z1BbsQUZFHD1XAd~emDDeK',
+            'kc8SS1tzuZ~jqjlebKGrUmpe'
+        ];
+        $this->client->addTasksToOrganization($taskIds, 'yAM*fDkztrT3gUcz9mNDgNOL');
+
+        $this->assertRequestIsPut('containers/organizations/yAM*fDkztrT3gUcz9mNDgNOL', [
+            'tasks' => [
+                -1,
+                '11z1BbsQUZFHD1XAd~emDDeK',
+                'kc8SS1tzuZ~jqjlebKGrUmpe'
+            ]
+        ]);
+    }
+
+    /**
+     * @covers OnFleet\Client::addTasksToTeam
+     */
+    public function testAddingTasksToTeam()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+
+        $taskIds = [
+            '11z1BbsQUZFHD1XAd~emDDeK',
+            'kc8SS1tzuZ~jqjlebKGrUmpe'
+        ];
+        $this->client->addTasksToTeam($taskIds, 'E4s6bwGpOZp6pSU3Hz*2ngFA');
+
+        $this->assertRequestIsPut('containers/teams/E4s6bwGpOZp6pSU3Hz*2ngFA', [
+            'tasks' => [
+                -1,
+                '11z1BbsQUZFHD1XAd~emDDeK',
+                'kc8SS1tzuZ~jqjlebKGrUmpe'
+            ]
+        ]);
+    }
+
+    /**
+     * @covers OnFleet\Client::addTasksToWorker
+     */
+    public function testAddingTasksToWorker()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+
+        $taskIds = [
+            '11z1BbsQUZFHD1XAd~emDDeK',
+            'kc8SS1tzuZ~jqjlebKGrUmpe'
+        ];
+        $this->client->addTasksToWorker($taskIds, 'h*wSb*apKlDkUFnuLTtjPke7');
+
+        $this->assertRequestIsPut('containers/workers/h*wSb*apKlDkUFnuLTtjPke7', [
+            'tasks' => [
+                -1,
+                '11z1BbsQUZFHD1XAd~emDDeK',
+                'kc8SS1tzuZ~jqjlebKGrUmpe'
+            ]
+        ]);
+    }
+
+    /**
+     * @covers OnFleet\Client::createWebhook
+     * @covers OnFleet\Webhook
+     */
+    public function testCreatingWebhookReturnsWebhook()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            {
+                "id": "9zqMxI79mRcHpXE111nILiPn",
+                "count": 0,
+                "url": "http://requestb.in/11sl22k1",
+                "trigger": 6
+            }
+            ')));
+
+        $webhook = $this->client->createWebhook('http://requestb.in/11sl22k1', Webhook::TRIGGER_TASK_CREATED);
+
+        $this->assertRequestIsPost('webhooks', [
+            'url' => 'http://requestb.in/11sl22k1',
+            'trigger' => 6
+        ]);
+        $this->assertInstanceOf(Webhook::class, $webhook);
+        $this->assertEquals('http://requestb.in/11sl22k1', $webhook->getUrl());
+        $this->assertEquals(6, $webhook->getTrigger());
+    }
+    /**
+     * @covers OnFleet\Client::getWebhooks
+     * @covers OnFleet\Webhook
+     */
+    public function testGettingWebhookReturnsArrayOfWebhooks()
+    {
+        $this->mockedResponses
+            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            [
+                {
+                    "id": "9zqMxI79mRcHpXE111nILiPn",
+                    "count": 0,
+                    "url": "http://requestb.in/11sl22k1",
+                    "trigger": 6
+                },
+                {
+                    "id": "9zqMxI79mRcHpXE111nILiPn",
+                    "count": 9,
+                    "url": "http://requestb.in/11sl22k1",
+                    "trigger": 2
+                }
+            ]
+            ')));
+
+        $webhooks = $this->client->getWebhooks();
+
+        $this->assertRequestIsGet('webhooks');
+        $this->assertCount(2, $webhooks);
+        $webhook = $webhooks[1];
+        $this->assertInstanceOf(Webhook::class, $webhook);
+        $this->assertEquals('http://requestb.in/11sl22k1', $webhook->getUrl());
+        $this->assertEquals('9zqMxI79mRcHpXE111nILiPn', $webhook->getId());
+        $this->assertEquals(9, $webhook->getCount());
+        $this->assertEquals(2, $webhook->getTrigger());
     }
 }

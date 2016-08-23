@@ -74,4 +74,24 @@ class ApiTestCase extends TestCase
             $this->assertJsonStringEqualsJsonString(json_encode($data), $payload);
         }
     }
+
+    /**
+     * Assert request is put, has JSON content type and optionally check payload data
+     *
+     * @param string $path
+     * @param array|null $data
+     */
+    public function assertRequestIsPut($path, array $data = null)
+    {
+        $request = $this->history->getLastRequest();
+        $this->assertEquals('PUT', $request->getMethod());
+        $this->assertEquals('application/json', $request->getHeader('Content-type'));
+
+        $this->assertEquals($this->baseUrl . $path, $request->getUrl());
+
+        if (null !== $data) {
+            $payload = $request->getBody()->__toString();
+            $this->assertJsonStringEqualsJsonString(json_encode($data), $payload);
+        }
+    }
 }

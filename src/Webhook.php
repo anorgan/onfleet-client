@@ -85,27 +85,11 @@ class Webhook extends Entity
     }
 
     /**
-     * @param mixed $url
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-    }
-
-    /**
      * @return mixed
      */
     public function getTrigger()
     {
         return $this->trigger;
-    }
-
-    /**
-     * @param mixed $trigger
-     */
-    public function setTrigger($trigger)
-    {
-        $this->trigger = $trigger;
     }
 
     /**
