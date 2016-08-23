@@ -1,6 +1,7 @@
 {
   "name": "anorgan/onfleet-client",
   "description": "OnFleet API client",
+  "keywords": ["OnFleet", "Client", "API"],
   "minimum-stability": "stable",
   "license": "MIT",
   "authors": [
