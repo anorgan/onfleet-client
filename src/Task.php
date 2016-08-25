@@ -1,12 +1,12 @@
 <?php
 
-namespace Anorgan\OnFleet;
+namespace Anorgan\Onfleet;
 
 use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Class Task
- * @package Anorgan\OnFleet
+ * @package Anorgan\Onfleet
  */
 class Task extends Entity
 {

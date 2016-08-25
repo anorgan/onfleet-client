@@ -1,10 +1,10 @@
 <?php
 
-namespace Anorgan\OnFleet;
+namespace Anorgan\Onfleet;
 
 /**
  * Class Hub
- * @package Anorgan\OnFleet
+ * @package Anorgan\Onfleet
  */
 class Hub extends Entity
 {

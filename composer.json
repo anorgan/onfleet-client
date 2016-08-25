@@ -1,7 +1,7 @@
 {
   "name": "anorgan/onfleet-client",
-  "description": "OnFleet API client",
-  "keywords": ["OnFleet", "Client", "API"],
+  "description": "Onfleet API client",
+  "keywords": ["Onfleet", "Client", "API"],
   "minimum-stability": "stable",
   "license": "MIT",
   "authors": [
@@ -9,12 +9,12 @@
   ],
   "autoload": {
     "psr-4": {
-      "Anorgan\\OnFleet\\": "src/"
+      "Anorgan\\Onfleet\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Anorgan\\OnFleet\\Tests\\": "tests/"
+      "Anorgan\\Onfleet\\Tests\\": "tests/"
     }
   },
   "require": {

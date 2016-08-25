@@ -1,13 +1,13 @@
 <?php
 
-namespace Anorgan\OnFleet;
+namespace Anorgan\Onfleet;
 
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\ClientException;
 
 /**
  * Class Client
- * @package Anorgan\OnFleet
+ * @package Anorgan\Onfleet
  */
 class Client extends Guzzle
 {

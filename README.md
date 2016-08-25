@@ -1,10 +1,10 @@
-# OnFleet API Client
+# Onfleet API Client
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/anorgan/onfleet-client/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/anorgan/onfleet-client/?branch=master)
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/anorgan/onfleet-client/blob/master/LICENSE)
 [![Latest Stable Version](https://img.shields.io/packagist/v/anorgan/onfleet-client.svg?style=flat-square)](https://packagist.org/packages/anorgan/onfleet-client)
 
-PHP API Client for [OnFleet](https://onfleet.com) service
+PHP API Client for [Onfleet](https://onfleet.com) service
 
 ## Instalation
 
@@ -23,7 +23,7 @@ Install via [Composer](http://getcomposer.org) by running `composer require anor
 ```php
 <?php
 
-$onFleet = new Anorgan\OnFleet\Client('onFleetUserName');
+$onFleet = new Anorgan\Onfleet\Client('onFleetUserName');
 
 // Get your Organization
 $organization = $onFleet->getMyOrganization();
@@ -143,7 +143,7 @@ $task->complete(true, 'Successful completion note');
 $task->delete();
 
 // Create webhook
-$webhook = $onFleet->createWebhook('http://example.com/webhook/onFleet/taskCreated', Anorgan\OnFleet\Webhook::TRIGGER_TASK_CREATED);
+$webhook = $onFleet->createWebhook('http://example.com/webhook/onFleet/taskCreated', Anorgan\Onfleet\Webhook::TRIGGER_TASK_CREATED);
 
 // Delete webhook
 $webhook->delete();
@@ -183,4 +183,4 @@ PHP 7.0 or above
 
 ## Licence
 
-OnFleet PHP API client is licensed under the MIT License - see the LICENSE file for details
+Onfleet PHP API client is licensed under the MIT License - see the LICENSE file for details

@@ -1,10 +1,10 @@
 <?php
 
-namespace Anorgan\OnFleet;
+namespace Anorgan\Onfleet;
 
 /**
  * Class Worker
- * @package Anorgan\OnFleet
+ * @package Anorgan\Onfleet
  */
 class Worker extends Entity
 {
