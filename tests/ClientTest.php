@@ -2,10 +2,7 @@
 
 namespace Anorgan\OnFleet\Tests;
 
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Stream\Stream;
 use Anorgan\OnFleet\Administrator;
-use Anorgan\OnFleet\Client;
 use Anorgan\OnFleet\Destination;
 use Anorgan\OnFleet\Hub;
 use Anorgan\OnFleet\Organization;
@@ -14,17 +11,19 @@ use Anorgan\OnFleet\Task;
 use Anorgan\OnFleet\Team;
 use Anorgan\OnFleet\Webhook;
 use Anorgan\OnFleet\Worker;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Stream\Stream;
 
 /**
  * Class ClientTest
  * @package Anorgan\OnFleet\Tests
- * @covers Anorgan\OnFleet\Client
+ * @covers \Anorgan\OnFleet\Client
  */
 class ClientTest extends ApiTestCase
 {
     /**
-     * @covers Anorgan\OnFleet\Client::getMyOrganization
-     * @covers Anorgan\OnFleet\Organization
+     * @covers \Anorgan\OnFleet\Client::getMyOrganization
+     * @covers \Anorgan\OnFleet\Organization
      */
     public function testGettingMyOrganizationReturnsOrganization()
     {
@@ -62,8 +61,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getOrganization
-     * @covers Anorgan\OnFleet\Organization
+     * @covers \Anorgan\OnFleet\Client::getOrganization
+     * @covers \Anorgan\OnFleet\Organization
      */
     public function testGettingDelegateeOrganizationByIdReturnsOrganization()
     {
@@ -91,8 +90,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::createAdministrator
-     * @covers Anorgan\OnFleet\Administrator
+     * @covers \Anorgan\OnFleet\Client::createAdministrator
+     * @covers \Anorgan\OnFleet\Administrator
      */
     public function testCreatingAdministratorCreatesAndReturnsAdministrator()
     {
@@ -130,8 +129,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getAdministrators
-     * @covers Anorgan\OnFleet\Administrator
+     * @covers \Anorgan\OnFleet\Client::getAdministrators
+     * @covers \Anorgan\OnFleet\Administrator
      */
     public function testGettingAdministratorsReturnsArrayOfAdministrators()
     {
@@ -175,8 +174,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::createWorker
-     * @covers Anorgan\OnFleet\Worker
+     * @covers \Anorgan\OnFleet\Client::createWorker
+     * @covers \Anorgan\OnFleet\Worker
      */
     public function testCreatingWorkerCreatesAndReturnsWorker()
     {
@@ -235,8 +234,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getWorkers
-     * @covers Anorgan\OnFleet\Worker
+     * @covers \Anorgan\OnFleet\Client::getWorkers
+     * @covers \Anorgan\OnFleet\Worker
      */
     public function testGettingWorkersReturnsArrayOfWorkers()
     {
@@ -340,8 +339,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getWorker
-     * @covers Anorgan\OnFleet\Worker
+     * @covers \Anorgan\OnFleet\Client::getWorker
+     * @covers \Anorgan\OnFleet\Worker
      */
     public function testGettingWorkerByIdReturnsWorker()
     {
@@ -389,8 +388,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getHubs
-     * @covers Anorgan\OnFleet\Hub
+     * @covers \Anorgan\OnFleet\Client::getHubs
+     * @covers \Anorgan\OnFleet\Hub
      */
     public function testGettingHubsReturnsArrayOfHubs()
     {
@@ -443,8 +442,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::createTeam
-     * @covers Anorgan\OnFleet\Team
+     * @covers \Anorgan\OnFleet\Client::createTeam
+     * @covers \Anorgan\OnFleet\Team
      */
     public function testCreatingTeamCreatesAndReturnsTeam()
     {
@@ -487,8 +486,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getTeams
-     * @covers Anorgan\OnFleet\Team
+     * @covers \Anorgan\OnFleet\Client::getTeams
+     * @covers \Anorgan\OnFleet\Team
      */
     public function testGettingTeamsReturnsArrayOfTeams()
     {
@@ -522,8 +521,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getTeam
-     * @covers Anorgan\OnFleet\Team
+     * @covers \Anorgan\OnFleet\Client::getTeam
+     * @covers \Anorgan\OnFleet\Team
      */
     public function testGettingTeamByIdReturnsTeam()
     {
@@ -552,8 +551,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::createDestination
-     * @covers Anorgan\OnFleet\Destination
+     * @covers \Anorgan\OnFleet\Client::createDestination
+     * @covers \Anorgan\OnFleet\Destination
      */
     public function testCreatingDestinationReturnsDestination()
     {
@@ -606,8 +605,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getDestination
-     * @covers Anorgan\OnFleet\Destination
+     * @covers \Anorgan\OnFleet\Client::getDestination
+     * @covers \Anorgan\OnFleet\Destination
      */
     public function testGettingDestinationByIdReturnsDestination()
     {
@@ -647,8 +646,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::createRecipient
-     * @covers Anorgan\OnFleet\Recipient
+     * @covers \Anorgan\OnFleet\Client::createRecipient
+     * @covers \Anorgan\OnFleet\Recipient
      */
     public function testCreatingRecipientCreatesAndReturnsRecipient()
     {
@@ -682,8 +681,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getRecipient
-     * @covers Anorgan\OnFleet\Recipient
+     * @covers \Anorgan\OnFleet\Client::getRecipient
+     * @covers \Anorgan\OnFleet\Recipient
      */
     public function testGettingRecipientByIdReturnsRecipient()
     {
@@ -711,8 +710,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getRecipientByName
-     * @covers Anorgan\OnFleet\Recipient
+     * @covers \Anorgan\OnFleet\Client::getRecipientByName
+     * @covers \Anorgan\OnFleet\Recipient
      */
     public function testGettingRecipientByNameReturnsRecipient()
     {
@@ -740,8 +739,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getRecipientByPhone
-     * @covers Anorgan\OnFleet\Recipient
+     * @covers \Anorgan\OnFleet\Client::getRecipientByPhone
+     * @covers \Anorgan\OnFleet\Recipient
      */
     public function testGettingRecipientByPhoneReturnsRecipient()
     {
@@ -762,15 +761,15 @@ class ClientTest extends ApiTestCase
 
         $recipient = $this->client->getRecipientByPhone('(650)-555-1133');
 
-        $this->assertRequestIsGet('recipients/phone/6505551133');
+        $this->assertRequestIsGet('recipients/phone/+6505551133');
         $this->assertInstanceOf(Recipient::class, $recipient);
         $this->assertEquals('VVLx5OdKvw0dRSjT2rGOc6Y*', $recipient->getId());
         $this->assertFalse($recipient->isSMSNotificationSkipped());
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::createTask
-     * @covers Anorgan\OnFleet\Task
+     * @covers \Anorgan\OnFleet\Client::createTask
+     * @covers \Anorgan\OnFleet\Task
      */
     public function testCreatingATaskReturnsTask()
     {
@@ -866,8 +865,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getTasks
-     * @covers Anorgan\OnFleet\Task
+     * @covers \Anorgan\OnFleet\Client::getTasks
+     * @covers \Anorgan\OnFleet\Task
      */
     public function testGettingTasksReturnsArrayOfTasks()
     {
@@ -954,8 +953,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getTask
-     * @covers Anorgan\OnFleet\Task
+     * @covers \Anorgan\OnFleet\Client::getTask
+     * @covers \Anorgan\OnFleet\Task
      */
     public function testGettingTaskByIdReturnsTask()
     {
@@ -974,8 +973,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::getTaskByShortId
-     * @covers Anorgan\OnFleet\Task
+     * @covers \Anorgan\OnFleet\Client::getTaskByShortId
+     * @covers \Anorgan\OnFleet\Task
      */
     public function testGettingTaskByShortIdReturnsTask()
     {
@@ -996,7 +995,7 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::setOrganizationTasks
+     * @covers \Anorgan\OnFleet\Client::setOrganizationTasks
      */
     public function testSettingOrganizationTasks()
     {
@@ -1015,7 +1014,7 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::setTeamTasks
+     * @covers \Anorgan\OnFleet\Client::setTeamTasks
      */
     public function testSettingTeamTasks()
     {
@@ -1034,7 +1033,7 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::setWorkerTasks
+     * @covers \Anorgan\OnFleet\Client::setWorkerTasks
      */
     public function testSettingWorkerTasks()
     {
@@ -1053,7 +1052,7 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::addTasksToOrganization
+     * @covers \Anorgan\OnFleet\Client::addTasksToOrganization
      */
     public function testAddingTasksToOrganization()
     {
@@ -1076,7 +1075,7 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::addTasksToTeam
+     * @covers \Anorgan\OnFleet\Client::addTasksToTeam
      */
     public function testAddingTasksToTeam()
     {
@@ -1099,7 +1098,7 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::addTasksToWorker
+     * @covers \Anorgan\OnFleet\Client::addTasksToWorker
      */
     public function testAddingTasksToWorker()
     {
@@ -1122,8 +1121,8 @@ class ClientTest extends ApiTestCase
     }
 
     /**
-     * @covers Anorgan\OnFleet\Client::createWebhook
-     * @covers Anorgan\OnFleet\Webhook
+     * @covers \Anorgan\OnFleet\Client::createWebhook
+     * @covers \Anorgan\OnFleet\Webhook
      */
     public function testCreatingWebhookReturnsWebhook()
     {
@@ -1148,8 +1147,8 @@ class ClientTest extends ApiTestCase
         $this->assertEquals(6, $webhook->getTrigger());
     }
     /**
-     * @covers Anorgan\OnFleet\Client::getWebhooks
-     * @covers Anorgan\OnFleet\Webhook
+     * @covers \Anorgan\OnFleet\Client::getWebhooks
+     * @covers \Anorgan\OnFleet\Webhook
      */
     public function testGettingWebhookReturnsArrayOfWebhooks()
     {
