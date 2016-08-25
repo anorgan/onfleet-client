@@ -1,6 +1,6 @@
 <?php
 
-namespace Anorgan\Onfleet\tests;
+namespace Anorgan\Onfleet\Tests;
 
 use Anorgan\Onfleet\Administrator;
 use Anorgan\Onfleet\Destination;

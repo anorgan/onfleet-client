@@ -1,6 +1,6 @@
 <?php
 
-namespace Anorgan\Onfleet\tests;
+namespace Anorgan\Onfleet\Tests;
 
 use GuzzleHttp\Subscriber\History;
 use GuzzleHttp\Subscriber\Mock;
