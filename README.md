@@ -6,14 +6,14 @@
 
 PHP API Client for [Onfleet](https://onfleet.com) service
 
-## Instalation
+## Installation
 
 Install via [Composer](http://getcomposer.org) by running `composer require anorgan/onfleet-client ^1.0`.
 
 ```json
 {
     "require": {
-       "anorgan/onfleet-api": "^1.0"
+       "anorgan/onfleet-client": "^1.0"
     }
 }
 ```
