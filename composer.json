@@ -19,10 +19,10 @@
   },
   "require": {
     "php": ">=7.0",
-    "guzzlehttp/guzzle": "^5.3"
+    "guzzlehttp/guzzle": "^6.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5",
-    "friendsofphp/php-cs-fixer": "^1.11"
+    "phpunit/phpunit": "^6.4",
+    "friendsofphp/php-cs-fixer": "^2.7"
   }
 }
