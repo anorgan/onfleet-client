@@ -1,22 +1,22 @@
 <?php
 
-use Symfony\CS\FixerInterface;
 
-$finder = Symfony\CS\Finder\DefaultFinder::create()
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+
+$finder = Finder::create()
     ->in([
         __DIR__ .'/src',
         __DIR__ .'/tests',
     ])
 ;
 
-return Symfony\CS\Config\Config::create()
+return Config::create()
     ->setUsingCache(true)
-    ->level(FixerInterface::PSR2_LEVEL)
-    ->fixers([
-        'phpdoc_order',
-        'align_equals',
-        'align_double_arrow',
-        'short_array_syntax'
+    ->setRules([
+        '@PSR2'              => true,
+        'array_syntax'       => ['syntax' => 'short'],
+        'phpdoc_order'       => true,
     ])
-    ->finder($finder)
+    ->setFinder($finder)
 ;

@@ -3,7 +3,11 @@
 namespace Anorgan\Onfleet;
 
 use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
+use RuntimeException;
 
 /**
  * Class Client
@@ -11,7 +15,7 @@ use GuzzleHttp\Exception\ClientException;
  */
 class Client extends Guzzle
 {
-    const BASE_URL = 'https://onfleet.com/api/{version}/';
+    const BASE_URL = 'https://onfleet.com/api/v2/';
     const VERSION  = 'v2';
 
     /**
@@ -21,13 +25,9 @@ class Client extends Guzzle
      */
     public function __construct($username, array $config = [])
     {
-        $version = isset($config['version']) ? $config['version'] : static::VERSION;
-
-        if (!isset($config['base_url'])) {
-            $config['base_url'] = [
-                static::BASE_URL,
-                ['version' => $version]
-            ];
+        $baseUriKey = version_compare(ClientInterface::VERSION, '6') === 1 ? 'base_uri' : 'base_url';
+        if (!isset($config[$baseUriKey])) {
+            $config[$baseUriKey] = static::BASE_URL;
         }
         $config['defaults']['auth'] = [$username, null];
 
@@ -35,17 +35,18 @@ class Client extends Guzzle
     }
 
     /**
-     * @param string $url
+     * @param string|UriInterface $uri
      * @param array $options
      * @throws \Exception
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return ResponseInterface
      */
-    public function post($url = null, array $options = [])
+    public function post($uri, array $options = [])
     {
         try {
-            return parent::post($url, $options);
+            $response = parent::post($uri, $options);
+            return Response::fromResponse($response);
         } catch (ClientException $e) {
-            $error   = $e->getResponse()->json();
+            $error   = Response::fromResponse($e->getResponse())->json(false);
             $message = $error['message']['message'];
             if (isset($error['message']['cause'])) {
                 if (is_array($error['message']['cause'])) {
@@ -54,21 +55,22 @@ class Client extends Guzzle
                     $message .= ' '.$error['message']['cause'];
                 }
             }
-            throw new \Exception('Error while calling post on '.$url.': '.$message);
+            throw new RuntimeException('Error while calling post on '.$uri.': '.$message);
         }
     }
 
     /**
-     * @param string $url
+     * @param string|UriInterface $uri
      * @param array $options
-     * @return \GuzzleHttp\Message\ResponseInterface|null
+     * @throws \GuzzleHttp\Exception\ClientException
+     * @return null|\Psr\Http\Message\ResponseInterface|Response
      */
-    public function get($url = null, $options = [])
+    public function get($uri, array $options = [])
     {
         try {
-            return parent::get($url, $options);
+            return Response::fromResponse(parent::get($uri, $options));
         } catch (ClientException $e) {
-            if ($e->getCode() == 404) {
+            if ((int) $e->getCode() === 404) {
                 return null;
             }
             throw $e;
@@ -81,7 +83,7 @@ class Client extends Guzzle
     public function getMyOrganization(): Organization
     {
         $response = $this->get('organization');
-        return Organization::fromJson($response->json(['object' => true]), $this);
+        return Organization::fromJson($response->json(), $this);
     }
 
     /**
@@ -93,7 +95,7 @@ class Client extends Guzzle
     public function getOrganization($id): Organization
     {
         $response = $this->get('organizations/'.$id);
-        return Organization::fromJson($response->json(['object' => true]), $this);
+        return Organization::fromJson($response->json(), $this);
     }
 
     /**
@@ -108,7 +110,7 @@ class Client extends Guzzle
     public function createAdministrator(array $data): Administrator
     {
         $response = $this->post('admins', ['json' => $data]);
-        return Administrator::fromJson($response->json(['object' => true]), $this);
+        return Administrator::fromJson($response->json(), $this);
     }
 
     /**
@@ -119,7 +121,7 @@ class Client extends Guzzle
         $response = $this->get('admins');
 
         $administrators = [];
-        foreach ($response->json(['object' => true]) as $administratorData) {
+        foreach ($response->json() as $administratorData) {
             $administrators[] = Administrator::fromJson($administratorData, $this);
         }
 
@@ -144,7 +146,7 @@ class Client extends Guzzle
     public function createWorker(array $data): Worker
     {
         $response = $this->post('workers', ['json' => $data]);
-        return Worker::fromJson($response->json(['object' => true]), $this);
+        return Worker::fromJson($response->json(), $this);
     }
 
     /**
@@ -164,7 +166,7 @@ class Client extends Guzzle
         $response = $this->get('workers', compact('query'));
 
         $workers = [];
-        foreach ($response->json(['object' => true]) as $workerData) {
+        foreach ($response->json() as $workerData) {
             $workers[] = Worker::fromJson($workerData, $this);
         }
 
@@ -189,7 +191,7 @@ class Client extends Guzzle
         ]);
         $response = $this->get('workers/'.$id, compact('query'));
 
-        return Worker::fromJson($response->json(['object' => true]), $this);
+        return Worker::fromJson($response->json(), $this);
     }
 
     /**
@@ -200,7 +202,7 @@ class Client extends Guzzle
         $response = $this->get('hubs');
 
         $hubs = [];
-        foreach ($response->json(['object' => true]) as $hubData) {
+        foreach ($response->json() as $hubData) {
             $hubs[] = Hub::fromJson($hubData, $this);
         }
 
@@ -220,7 +222,7 @@ class Client extends Guzzle
     public function createTeam(array $data): Team
     {
         $response = $this->post('teams', ['json' => $data]);
-        return Team::fromJson($response->json(['object' => true]), $this);
+        return Team::fromJson($response->json(), $this);
     }
 
     /**
@@ -231,7 +233,7 @@ class Client extends Guzzle
         $response = $this->get('teams');
 
         $teams = [];
-        foreach ($response->json(['object' => true]) as $teamData) {
+        foreach ($response->json() as $teamData) {
             $teams[] = Team::fromJson($teamData, $this);
         }
 
@@ -245,7 +247,7 @@ class Client extends Guzzle
     public function getTeam($id): Team
     {
         $response = $this->get('teams/'.$id);
-        return Team::fromJson($response->json(['object' => true]), $this);
+        return Team::fromJson($response->json(), $this);
     }
 
     /**
@@ -277,7 +279,7 @@ class Client extends Guzzle
     public function createDestination(array $data): Destination
     {
         $response = $this->post('destinations', ['json' => $data]);
-        return Destination::fromJson($response->json(['object' => true]), $this);
+        return Destination::fromJson($response->json(), $this);
     }
 
     /**
@@ -287,7 +289,7 @@ class Client extends Guzzle
     public function getDestination($id): Destination
     {
         $response = $this->get('destinations/'.$id);
-        return Destination::fromJson($response->json(['object' => true]), $this);
+        return Destination::fromJson($response->json(), $this);
     }
 
     /**
@@ -308,7 +310,7 @@ class Client extends Guzzle
     public function createRecipient(array $data): Recipient
     {
         $response = $this->post('recipients', ['json' => $data]);
-        return Recipient::fromJson($response->json(['object' => true]), $this);
+        return Recipient::fromJson($response->json(), $this);
     }
 
     /**
@@ -318,7 +320,7 @@ class Client extends Guzzle
     public function getRecipient($id): Recipient
     {
         $response = $this->get('recipients/'.$id);
-        return Recipient::fromJson($response->json(['object' => true]), $this);
+        return Recipient::fromJson($response->json(), $this);
     }
 
     /**
@@ -334,7 +336,7 @@ class Client extends Guzzle
             return null;
         }
 
-        return Recipient::fromJson($response->json(['object' => true]), $this);
+        return Recipient::fromJson($response->json(), $this);
     }
 
     /**
@@ -350,7 +352,7 @@ class Client extends Guzzle
             return null;
         }
 
-        return Recipient::fromJson($response->json(['object' => true]), $this);
+        return Recipient::fromJson($response->json(), $this);
     }
 
     /**
@@ -361,7 +363,7 @@ class Client extends Guzzle
     public function createTask(array $data): Task
     {
         $response = $this->post('tasks', ['json' => $data]);
-        return Task::fromJson($response->json(['object' => true]), $this);
+        return Task::fromJson($response->json(), $this);
     }
 
     /**
@@ -390,7 +392,7 @@ class Client extends Guzzle
         $response = $this->get('tasks/all', compact('query'));
 
         $tasks  = [];
-        $json   = $response->json(['object' => true]);
+        $json   = $response->json();
         $lastId = isset($json->lastId) ? $json->lastId : false;
         foreach ($json->tasks as $taskData) {
             $tasks[] = Task::fromJson($taskData, $this);
@@ -406,7 +408,7 @@ class Client extends Guzzle
     public function getTask($id): Task
     {
         $response = $this->get('tasks/'.$id);
-        return Task::fromJson($response->json(['object' => true]), $this);
+        return Task::fromJson($response->json(), $this);
     }
 
     /**
@@ -416,7 +418,7 @@ class Client extends Guzzle
     public function getTaskByShortId($shortId): Task
     {
         $response = $this->get('tasks/shortId/'.$shortId);
-        return Task::fromJson($response->json(['object' => true]), $this);
+        return Task::fromJson($response->json(), $this);
     }
 
     /**
@@ -493,7 +495,7 @@ class Client extends Guzzle
             ]
         ]);
 
-        return Webhook::fromJson($response->json(['object' => true]), $this);
+        return Webhook::fromJson($response->json(), $this);
     }
 
     /**
@@ -504,7 +506,7 @@ class Client extends Guzzle
         $response = $this->get('webhooks');
 
         $webhooks = [];
-        foreach ($response->json(['object' => true]) as $webhookData) {
+        foreach ($response->json() as $webhookData) {
             $webhooks[] = Webhook::fromJson($webhookData, $this);
         }
 
@@ -516,6 +518,7 @@ class Client extends Guzzle
      * @param string $targetId ID of organization, worker or team.
      * @param array $taskIds Array of task IDs.
      * @param int $position Insert tasks at a given index. To append to the end, use -1, to prepend, use 0.
+     * @throws \InvalidArgumentException
      */
     private function setContainerTasks($containerEndpoint, $targetId, array $taskIds, $position = null)
     {

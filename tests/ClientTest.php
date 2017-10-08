@@ -7,12 +7,11 @@ use Anorgan\Onfleet\Destination;
 use Anorgan\Onfleet\Hub;
 use Anorgan\Onfleet\Organization;
 use Anorgan\Onfleet\Recipient;
+use Anorgan\Onfleet\Response;
 use Anorgan\Onfleet\Task;
 use Anorgan\Onfleet\Team;
 use Anorgan\Onfleet\Webhook;
 use Anorgan\Onfleet\Worker;
-use GuzzleHttp\Message\Response;
-use GuzzleHttp\Stream\Stream;
 
 /**
  * Class ClientTest
@@ -28,8 +27,7 @@ class ClientTest extends ApiTestCase
     public function testGettingMyOrganizationReturnsOrganization()
     {
         // Arrange
-        $this->mockedResponses->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
-        {
+        $this->mockedResponses->append(new Response(200, ['Content-type' => 'application/json'], '{
             "id": "yAM*fDkztrT3gUcz9mNDgNOL",
             "timeCreated": 1454634415000,
             "timeLastModified": 1455048510514,
@@ -41,7 +39,7 @@ class ClientTest extends ApiTestCase
             "delegatees": [
                 "cBrUjKvQQgdRp~s1qvQNLpK*"
             ]
-        }')));
+        }'));
 
         // Act
         $organization = $this->client->getMyOrganization();
@@ -67,14 +65,14 @@ class ClientTest extends ApiTestCase
     public function testGettingDelegateeOrganizationByIdReturnsOrganization()
     {
         // Arrange
-        $this->mockedResponses->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+        $this->mockedResponses->append(new Response(200, ['Content-type' => 'application/json'], '
         {
             "id": "cBrUjKvQQgdRp~s1qvQNLpK*",
             "name": "Onfleet Engineering",
             "email": "dev@onfleet.com",
             "timezone": "America/Los_Angeles",
             "country": "US"
-        }')));
+        }'));
 
         // Act
         $organization = $this->client->getOrganization('cBrUjKvQQgdRp~s1qvQNLpK*');
@@ -97,7 +95,7 @@ class ClientTest extends ApiTestCase
     {
         // Arrange
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('{
+            ->append(new Response(200, ['Content-type' => 'application/json'], '{
             "id": "8AxaiKwMd~np7I*YP2NfukBE",
             "timeCreated": 1455156651000,
             "timeLastModified": 1455156651779,
@@ -107,7 +105,7 @@ class ClientTest extends ApiTestCase
             "name": "Admin Dispatcher",
             "isActive": false,
             "metadata": []
-        }')));
+        }'));
 
         $adminData = [
             'name'  => 'Admin Dispatcher',
@@ -135,7 +133,7 @@ class ClientTest extends ApiTestCase
     public function testGettingAdministratorsReturnsArrayOfAdministrators()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             [
                 {
                     "id": "8AxaiKwMd~np7I*YP2NfukBE",
@@ -160,7 +158,7 @@ class ClientTest extends ApiTestCase
                     "metadata": []
                 }
             ]
-            ')));
+            '));
 
         $administrators = $this->client->getAdministrators();
 
@@ -181,7 +179,7 @@ class ClientTest extends ApiTestCase
     {
         // Arrange
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "sFtvhYK2l26zS0imptJJdC2q",
                 "timeCreated": 1455156653000,
@@ -206,7 +204,7 @@ class ClientTest extends ApiTestCase
                     "color": "purple"
                 }
             }
-            ')));
+            '));
 
         $data = [
             'name'  => 'Worker Workowsky',
@@ -240,7 +238,7 @@ class ClientTest extends ApiTestCase
     public function testGettingWorkersReturnsArrayOfWorkers()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             [
                 {
                     "id": "h*wSb*apKlDkUFnuLTtjPke7",
@@ -325,7 +323,7 @@ class ClientTest extends ApiTestCase
                     }
                 }
             ]
-            ')));
+            '));
 
         $workers = $this->client->getWorkers();
 
@@ -345,7 +343,7 @@ class ClientTest extends ApiTestCase
     public function testGettingWorkerByIdReturnsWorker()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "1LjhGUWdxFbvdsTAAXs0TFos",
                 "timeCreated": 1455049755000,
@@ -379,7 +377,7 @@ class ClientTest extends ApiTestCase
                     "color": "Red"
                 }
             }
-            ')));
+            '));
 
         $worker = $this->client->getWorker('1LjhGUWdxFbvdsTAAXs0TFos');
 
@@ -394,7 +392,7 @@ class ClientTest extends ApiTestCase
     public function testGettingHubsReturnsArrayOfHubs()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             [
                 {
                     "id": "E4s6bwGpOZp6pSU3Hz*2ngFA",
@@ -429,7 +427,7 @@ class ClientTest extends ApiTestCase
                     }
                 } 
             ]
-            ')));
+            '));
 
         $hubs = $this->client->getHubs();
 
@@ -448,7 +446,7 @@ class ClientTest extends ApiTestCase
     public function testCreatingTeamCreatesAndReturnsTeam()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "teamiKwMd~np7I*YP2NfukBE",
                 "name": "Team",
@@ -463,7 +461,7 @@ class ClientTest extends ApiTestCase
                 "timeCreated": 1455156651000,
                 "timeLastModified": 1455156651779
             }
-            ')));
+            '));
 
         $data = [
             'name'    => 'Team',
@@ -492,7 +490,7 @@ class ClientTest extends ApiTestCase
     public function testGettingTeamsReturnsArrayOfTeams()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             [
                 {
                     "id": "teamiKwMd~np7I*YP2NfukBE",
@@ -509,7 +507,7 @@ class ClientTest extends ApiTestCase
                     "timeLastModified": 1455156651779
                 }
             ]
-            ')));
+            '));
 
         $teams = $this->client->getTeams();
 
@@ -527,7 +525,7 @@ class ClientTest extends ApiTestCase
     public function testGettingTeamByIdReturnsTeam()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "teamiKwMd~np7I*YP2NfukBE",
                 "name": "Team",
@@ -542,7 +540,7 @@ class ClientTest extends ApiTestCase
                 "timeCreated": 1455156651000,
                 "timeLastModified": 1455156651779
             }
-            ')));
+            '));
 
         $team = $this->client->getTeam('teamiKwMd~np7I*YP2NfukBE');
 
@@ -557,7 +555,7 @@ class ClientTest extends ApiTestCase
     public function testCreatingDestinationReturnsDestination()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "JLn6ZoYGZWn2wB2HaR9glsqB",
                 "timeCreated": 1455156663000,
@@ -578,7 +576,7 @@ class ClientTest extends ApiTestCase
                 "notes": "Don\'t forget to check out the epic rooftop.",
                 "metadata": []
             }
-            ')));
+            '));
 
         $data = [
             'address' => [
@@ -611,7 +609,7 @@ class ClientTest extends ApiTestCase
     public function testGettingDestinationByIdReturnsDestination()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "JLn6ZoYGZWn2wB2HaR9glsqB",
                 "timeCreated": 1455156663000,
@@ -632,7 +630,7 @@ class ClientTest extends ApiTestCase
                 "notes": "Don\'t forget to check out the epic rooftop.",
                 "metadata": []
             }
-            ')));
+            '));
 
         $destination = $this->client->getDestination('JLn6ZoYGZWn2wB2HaR9glsqB');
 
@@ -652,7 +650,7 @@ class ClientTest extends ApiTestCase
     public function testCreatingRecipientCreatesAndReturnsRecipient()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "VVLx5OdKvw0dRSjT2rGOc6Y*",
                 "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
@@ -664,7 +662,7 @@ class ClientTest extends ApiTestCase
                 "skipSMSNotifications": false,
                 "metadata": []
             }
-            ')));
+            '));
 
         $data = [
             'name'  => 'Boris Foster',
@@ -687,7 +685,7 @@ class ClientTest extends ApiTestCase
     public function testGettingRecipientByIdReturnsRecipient()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "VVLx5OdKvw0dRSjT2rGOc6Y*",
                 "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
@@ -699,7 +697,7 @@ class ClientTest extends ApiTestCase
                 "skipSMSNotifications": false,
                 "metadata": []
             }
-            ')));
+            '));
 
         $recipient = $this->client->getRecipient('VVLx5OdKvw0dRSjT2rGOc6Y*');
 
@@ -716,7 +714,7 @@ class ClientTest extends ApiTestCase
     public function testGettingRecipientByNameReturnsRecipient()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "VVLx5OdKvw0dRSjT2rGOc6Y*",
                 "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
@@ -728,7 +726,7 @@ class ClientTest extends ApiTestCase
                 "skipSMSNotifications": false,
                 "metadata": []
             }
-            ')));
+            '));
 
         $recipient = $this->client->getRecipientByName('Boris Foster');
 
@@ -745,7 +743,7 @@ class ClientTest extends ApiTestCase
     public function testGettingRecipientByPhoneReturnsRecipient()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "VVLx5OdKvw0dRSjT2rGOc6Y*",
                 "organization": "yAM*fDkztrT3gUcz9mNDgNOL",
@@ -757,7 +755,7 @@ class ClientTest extends ApiTestCase
                 "skipSMSNotifications": false,
                 "metadata": []
             }
-            ')));
+            '));
 
         $recipient = $this->client->getRecipientByPhone('(650)-555-1133');
 
@@ -774,7 +772,7 @@ class ClientTest extends ApiTestCase
     public function testCreatingATaskReturnsTask()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "kc8SS1tzuZ~jqjlebKGrUmpe",
                 "timeCreated": 1455156667000,
@@ -842,7 +840,7 @@ class ClientTest extends ApiTestCase
                 },
                 "didAutoAssign": true
             }
-            ')));
+            '));
 
         $data = [
             'destination' => 'zrVXZi5aDzOZlAghZaLfGAfA',
@@ -871,7 +869,7 @@ class ClientTest extends ApiTestCase
     public function testGettingTasksReturnsArrayOfTasks()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "lastId": "tPMO~h03sOIqFbnhqaOXgUsd",
                 "tasks": [
@@ -939,7 +937,7 @@ class ClientTest extends ApiTestCase
                     }
                 ]
             }
-            ')));
+            '));
         $from = \DateTime::createFromFormat('Y-m-d H:i:s', '2016-08-20 16:20:00');
         $to   = clone $from;
         $to->add(new \DateInterval('PT10M'));
@@ -959,11 +957,11 @@ class ClientTest extends ApiTestCase
     public function testGettingTaskByIdReturnsTask()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "11z1BbsQUZFHD1XAd~emDDeK"
             }
-            ')));
+            '));
 
         $task = $this->client->getTask('11z1BbsQUZFHD1XAd~emDDeK');
 
@@ -979,12 +977,12 @@ class ClientTest extends ApiTestCase
     public function testGettingTaskByShortIdReturnsTask()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "11z1BbsQUZFHD1XAd~emDDeK",
                 "shortId": "31aac0a5"
             }
-            ')));
+            '));
 
         $task = $this->client->getTaskByShortId('31aac0a5');
 
@@ -1000,7 +998,7 @@ class ClientTest extends ApiTestCase
     public function testSettingOrganizationTasks()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+            ->append(new Response(200, ['Content-type' => 'application/json']));
 
         $taskIds = [
             '11z1BbsQUZFHD1XAd~emDDeK',
@@ -1019,7 +1017,7 @@ class ClientTest extends ApiTestCase
     public function testSettingTeamTasks()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+            ->append(new Response(200, ['Content-type' => 'application/json']));
 
         $taskIds = [
             '11z1BbsQUZFHD1XAd~emDDeK',
@@ -1038,7 +1036,7 @@ class ClientTest extends ApiTestCase
     public function testSettingWorkerTasks()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+            ->append(new Response(200, ['Content-type' => 'application/json']));
 
         $taskIds = [
             '11z1BbsQUZFHD1XAd~emDDeK',
@@ -1057,7 +1055,7 @@ class ClientTest extends ApiTestCase
     public function testAddingTasksToOrganization()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+            ->append(new Response(200, ['Content-type' => 'application/json']));
 
         $taskIds = [
             '11z1BbsQUZFHD1XAd~emDDeK',
@@ -1080,7 +1078,7 @@ class ClientTest extends ApiTestCase
     public function testAddingTasksToTeam()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+            ->append(new Response(200, ['Content-type' => 'application/json']));
 
         $taskIds = [
             '11z1BbsQUZFHD1XAd~emDDeK',
@@ -1103,7 +1101,7 @@ class ClientTest extends ApiTestCase
     public function testAddingTasksToWorker()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json']));
+            ->append(new Response(200, ['Content-type' => 'application/json']));
 
         $taskIds = [
             '11z1BbsQUZFHD1XAd~emDDeK',
@@ -1127,14 +1125,14 @@ class ClientTest extends ApiTestCase
     public function testCreatingWebhookReturnsWebhook()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             {
                 "id": "9zqMxI79mRcHpXE111nILiPn",
                 "count": 0,
                 "url": "http://requestb.in/11sl22k1",
                 "trigger": 6
             }
-            ')));
+            '));
 
         $webhook = $this->client->createWebhook('http://requestb.in/11sl22k1', Webhook::TRIGGER_TASK_CREATED);
 
@@ -1153,7 +1151,7 @@ class ClientTest extends ApiTestCase
     public function testGettingWebhookReturnsArrayOfWebhooks()
     {
         $this->mockedResponses
-            ->addResponse(new Response(200, ['Content-type' => 'application/json'], Stream::factory('
+            ->append(new Response(200, ['Content-type' => 'application/json'], '
             [
                 {
                     "id": "9zqMxI79mRcHpXE111nILiPn",
@@ -1168,7 +1166,7 @@ class ClientTest extends ApiTestCase
                     "trigger": 2
                 }
             ]
-            ')));
+            '));
 
         $webhooks = $this->client->getWebhooks();
 

@@ -2,9 +2,10 @@
 
 namespace Anorgan\Onfleet\Tests;
 
-use GuzzleHttp\Subscriber\History;
-use GuzzleHttp\Subscriber\Mock;
 use Anorgan\Onfleet\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use PHPUnit\Framework\TestCase;
 
 class ApiTestCase extends TestCase
@@ -22,12 +23,12 @@ class ApiTestCase extends TestCase
     protected $client;
 
     /**
-     * @var Mock
+     * @var MockHandler
      */
     protected $mockedResponses;
 
     /**
-     * @var History
+     * @var callable
      */
     protected $history;
 
@@ -36,12 +37,14 @@ class ApiTestCase extends TestCase
      */
     public function setUp()
     {
-        $this->client          = new Client(null);
-        $this->mockedResponses = new Mock();
-        $this->history         = new History();
+        $historyContainer      = [];
+        $this->history         = Middleware::history($historyContainer);
+        $this->mockedResponses = new MockHandler();
+        $stack                 = HandlerStack::create($this->mockedResponses);
+        // Add the history middleware to the handler stack.
+        $stack->push($this->history);
 
-        $this->client->getEmitter()->attach($this->history);
-        $this->client->getEmitter()->attach($this->mockedResponses);
+        $this->client          = new Client(null, ['handler' => $stack]);
     }
 
     /**
@@ -49,10 +52,10 @@ class ApiTestCase extends TestCase
      */
     public function assertRequestIsGet($path)
     {
-        $request = $this->history->getLastRequest();
+        $request = $this->mockedResponses->getLastRequest();
         $this->assertEquals('GET', $request->getMethod());
 
-        $this->assertEquals($this->baseUrl . $path, $request->getUrl());
+        $this->assertEquals($this->baseUrl . $path, $request->getUri());
     }
 
     /**
@@ -63,11 +66,11 @@ class ApiTestCase extends TestCase
      */
     public function assertRequestIsPost($path, array $data = null)
     {
-        $request = $this->history->getLastRequest();
+        $request = $this->mockedResponses->getLastRequest();
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('application/json', $request->getHeader('Content-type'));
+        $this->assertEquals('application/json', $request->getHeader('Content-type')[0]);
 
-        $this->assertEquals($this->baseUrl . $path, $request->getUrl());
+        $this->assertEquals($this->baseUrl . $path, $request->getUri());
 
         if (null !== $data) {
             $payload = $request->getBody()->__toString();
@@ -83,11 +86,11 @@ class ApiTestCase extends TestCase
      */
     public function assertRequestIsPut($path, array $data = null)
     {
-        $request = $this->history->getLastRequest();
+        $request = $this->mockedResponses->getLastRequest();
         $this->assertEquals('PUT', $request->getMethod());
-        $this->assertEquals('application/json', $request->getHeader('Content-type'));
+        $this->assertEquals('application/json', $request->getHeader('Content-type')[0]);
 
-        $this->assertEquals($this->baseUrl . $path, $request->getUrl());
+        $this->assertEquals($this->baseUrl . $path, $request->getUri());
 
         if (null !== $data) {
             $payload = $request->getBody()->__toString();
