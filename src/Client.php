@@ -29,7 +29,7 @@ class Client extends Guzzle
         if (!isset($config[$baseUriKey])) {
             $config[$baseUriKey] = static::BASE_URL;
         }
-        $config['defaults']['auth'] = [$username, null];
+        $config['auth'] = [$username, null];
 
         parent::__construct($config);
     }
