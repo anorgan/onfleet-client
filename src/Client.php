@@ -46,7 +46,7 @@ class Client extends Guzzle
             $response = parent::post($uri, $options);
             return Response::fromResponse($response);
         } catch (ClientException $e) {
-            $error   = Response::fromResponse($e->getResponse())->json(false);
+            $error   = Response::fromResponse($e->getResponse())->json(true);
             $message = $error['message']['message'];
             if (isset($error['message']['cause'])) {
                 if (is_array($error['message']['cause'])) {
