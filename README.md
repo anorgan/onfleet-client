@@ -179,7 +179,7 @@ $normalizedMetadata = $entity->getNormalizedMetadata();
 
 ## Requirements
 
-PHP 7.0 or above
+PHP 7.1 or above
 
 ## Licence
 
