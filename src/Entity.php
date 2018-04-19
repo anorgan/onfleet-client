@@ -147,7 +147,7 @@ abstract class Entity
         try {
             $this->client->delete($this->endpoint .'/'. $this->id);
         } catch (ClientException $e) {
-            $error   = $e->getResponse()->json();
+            $error   = json_decode($e->getResponse()->getBody(), true);
             $message = $error['message']['message'];
             if (isset($error['message']['cause'])) {
                 $message .= ' '. $error['message']['cause'];
