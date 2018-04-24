@@ -134,7 +134,7 @@ abstract class Entity
             'json' => $this->toArray()
         ]);
 
-        static::setProperties($this, $response->json(['object' => true]));
+        static::setProperties($this, json_decode($response));
 
         return $this;
     }

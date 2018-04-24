@@ -38,7 +38,7 @@ class Client extends Guzzle
      * @param string|UriInterface $uri
      * @param array $options
      * @throws \Exception
-     * @return ResponseInterface
+     * @return ResponseInterface|Response
      */
     public function post($uri, array $options = [])
     {
