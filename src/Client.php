@@ -98,6 +98,24 @@ class Client extends Guzzle
         return Organization::fromJson($response->json(), $this);
     }
 
+    public function getTaskDetails($onfleetTaskId)
+    {
+        $response = $this->get('tasks/' . $onfleetTaskId);
+
+        $details = json_decode(json_encode($response->json()), true);
+
+        return $details;
+    }
+
+    public function getDriverDetails($workerId)
+    {
+        $response = $this->get('workers/' . $workerId);
+
+        $details = json_decode(json_encode($response->json()), true);
+
+        return $details;
+    }
+
     /**
      * @param array $data {
      * @var string $name The administrator’s complete name.
