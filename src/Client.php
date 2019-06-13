@@ -115,6 +115,19 @@ class Client extends Guzzle
 
         return $details;
     }
+	
+	public function completeTask($onfleetTaskId)
+    {
+        //pre($this->getTaskDetails($onfleetTaskId), 1);
+
+        $data = [
+            'completionDetails' => [
+                'success' => $onfleetTaskId ? true : false,
+            ]
+        ];
+
+        $this->post('tasks/' . $onfleetTaskId . '/complete', ['json' => $data]);
+    }
 
     /**
      * @param array $data {
