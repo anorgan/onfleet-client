@@ -106,6 +106,15 @@ class Client extends Guzzle
 
         return $details;
     }
+	
+	public function getTaskDetailsShort($onfleetTaskIdShort)
+    {
+        $response = $this->get('tasks/shortId/' . $onfleetTaskIdShort);
+
+        $details = json_decode(json_encode($response->json()), true);
+
+        return $details;
+    }
 
     public function getDriverDetails($workerId)
     {
