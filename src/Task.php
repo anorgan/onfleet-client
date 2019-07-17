@@ -10,6 +10,7 @@ use Symfony\Component\Console\Exception\LogicException;
  */
 class Task extends Entity
 {
+	
     /**
      * Unassigned: task has not yet been assigned to a worker.
      */
