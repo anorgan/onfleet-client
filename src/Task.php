@@ -484,6 +484,7 @@ class Task extends Entity
         Team $autoAssignTeam = null,
         $completeAfter = null,
         $completeBefore = null,
+        $recipientName = null,
         $pickupTask = false,
         $dependencies = null,
         $quantity = null,
@@ -526,6 +527,10 @@ class Task extends Entity
 
         if (null !== $autoAssignTeam) {
             $taskArray['autoAssign']['team'] = $autoAssignTeam->getId();
+        }
+
+        if($recipientName){
+            $taskArray['recipientName'] = $recipientName;
         }
 
         return array_filter($taskArray);
