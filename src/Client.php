@@ -395,15 +395,13 @@ class Client extends Guzzle
         return Recipient::fromJson($response->json(), $this);
     }
 
-    /**
-     * @see Task::createAutoAssignedArray
-     * @param array $data
-     * @return Task
-     */
-    public function createTask(array $data): Task
+    public function createTask(array $data)
     {
         $response = $this->post('tasks', ['json' => $data]);
-        return Task::fromJson($response->json(), $this);
+
+        $task = Task::fromJson($response->json(), $this);
+
+        return [$task, $response];
     }
 
     /**
