@@ -101,8 +101,10 @@ class Client extends Guzzle
     public function getTaskDetails($onfleetTaskId)
     {
         $response = $this->get('tasks/' . $onfleetTaskId);
+		
+		$data = $response ? json_encode($response->json()) : ['error' => 'not found'];
 
-        $details = json_decode(json_encode($response->json()), true);
+        $details = json_decode($response, true);
 
         return $details;
     }
@@ -110,8 +112,10 @@ class Client extends Guzzle
 	public function getTaskDetailsShort($onfleetTaskIdShort)
     {
         $response = $this->get('tasks/shortId/' . $onfleetTaskIdShort);
+		
+		$data = $response ? json_encode($response->json()) : ['error' => 'not found'];
 
-        $details = json_decode(json_encode($response->json()), true);
+        $details = json_decode(json_encode($response, true);
 
         return $details;
     }
