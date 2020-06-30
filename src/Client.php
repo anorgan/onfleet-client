@@ -125,14 +125,13 @@ class Client extends Guzzle
         return $details;
     }
 	
-	public function completeTask($onfleetTaskId)
+	public function completeTask($onfleetTaskId, $success = true, $notes = null)
     {
-        //pre($this->getTaskDetails($onfleetTaskId), 1);
-
         $data = [
-            'completionDetails' => [
-                'success' => $onfleetTaskId ? true : false,
-            ]
+            'completionDetails' => array_filter([
+                'success' => $success ? true : false,
+                'notes' => $notes
+            ])
         ];
 
         $this->post('tasks/' . $onfleetTaskId . '/complete', ['json' => $data]);
